@@ -121,7 +121,7 @@ Este projeto possui finalidade exclusivamente acadêmica e educacional.
 ║   [ Criar Evento ]   [ Participar ]      ║
 ║                                          ║
 ╚══════════════════════════════════════════╝
-
+´´´
 ---
 
 # 👨‍💻 Organização
