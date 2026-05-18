@@ -2,7 +2,7 @@
 
 > Plataforma web para gerenciamento de eventos acadêmicos.
 
-O **360 Academics** é um web app desenvolvido pela organização 360 Eventos com o objetivo de modernizar e simplificar a gestão de eventos acadêmicos através de uma solução digital intuitiva, acessível e eficiente.
+O **360 Academics** é um web app desenvolvido pela organização **360 Eventos** com o objetivo de modernizar e simplificar a gestão de eventos acadêmicos através de uma solução digital intuitiva, acessível e eficiente.
 
 A plataforma foi idealizada para atender instituições de ensino, organizadores, professores, palestrantes e estudantes, oferecendo recursos completos para organização, participação e acompanhamento de eventos acadêmicos.
 
@@ -41,6 +41,7 @@ O projeto busca:
 # 🛠️ Funcionalidades
 
 ## 👨‍💼 Administração
+
 - Cadastro e gerenciamento de eventos
 - Controle de inscrições
 - Gestão de participantes
@@ -50,12 +51,14 @@ O projeto busca:
 - Painel administrativo
 
 ## 🎤 Professores e Palestrantes
+
 - Cadastro de palestras, workshops e minicursos
 - Gerenciamento de atividades
 - Controle de presença dos participantes
 - Emissão de certificados vinculados
 
 ## 🎓 Alunos e Participantes
+
 - Inscrição em eventos
 - Acompanhamento de atividades
 - Confirmação de presença
@@ -121,7 +124,10 @@ Este projeto possui finalidade exclusivamente acadêmica e educacional.
 ║   [ Criar Evento ]   [ Participar ]      ║
 ║                                          ║
 ╚══════════════════════════════════════════╝
-´´´
+```
+
+</div>
+
 ---
 
 # 👨‍💻 Organização
