@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(pageTitle, content)">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title th:text="${pageTitle}">Início</title>
+	<link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+	<header th:replace="~{fragments/header :: header}"></header>
+	<main class="page-content container" th:insert="${content}"></main>
+	<footer th:replace="~{fragments/footer :: footer}"></footer>
+</body>
+</html>

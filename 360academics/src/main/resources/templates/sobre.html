@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="#{page.about.title}">Sobre</h1>
+        <p th:text="#{page.about.text}">
+            Essa aplicação é simples e serve para organizar eventos e atividades acadêmicas.
+        </p>
+    </section>
+
+    <section class="section-card callout">
+        <p>Esse é apenas um teste.</p>
+        <a class="btn" th:href="@{/inicial}" th:text="#{page.about.back}">Voltar para a página inicial</a>
+    </section>
+</th:block>
+</html>

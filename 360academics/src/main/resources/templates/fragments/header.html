@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<header th:fragment="header" class="site-header">
+    <div class="shell header-inner">
+        <a class="brand" th:href="@{/inicial}" th:text="#{app.name}">360 Academics</a>
+        <nav class="site-nav">
+            <a th:href="@{/inicial}" th:text="#{nav.home}">Início</a>
+            <a th:href="@{/sobre}" th:text="#{nav.about}">Sobre</a>
+        </nav>
+    </div>
+</header>
+</html>
