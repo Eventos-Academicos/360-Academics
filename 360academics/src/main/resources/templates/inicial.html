@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+	  th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+	<section class="hero">
+		<h1 th:text="#{page.home.title}">Início</h1>
+		<p th:text="#{page.home.description}">
+			Plataforma acadêmica para organização de eventos, atividades e participação de estudantes.
+		</p>
+	</section>
+
+	<section class="section-card">
+		<h2 th:text="#{page.home.features.title}">Funcionalidades iniciais</h2>
+		<ul class="list-clean">
+			<li th:each="item : ${funcionalidades}" th:text="${item}">Cadastro de eventos acadêmicos</li>
+		</ul>
+	</section>
+
+	<section class="section-card callout">
+		<div>
+			<h2 th:text="#{page.home.contact.title}">Contato</h2>
+			<p th:text="#{page.home.contact.text}">Em caso de dúvidas, fale com a coordenação do projeto.</p>
+		</div>
+		<a class="btn" th:href="@{/sobre}" th:text="#{page.home.cta}">Saiba mais</a>
+	</section>
+</th:block>
+</html>
