@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Meus Certificados</h1>
+        <p>Certificados emitidos para eventos e atividades concluídas.</p>
+    </section>
+
+    <section class="section-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Atividade</th>
+                    <th>Emissão</th>
+                    <th>Código de validação</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="certificado : ${certificados}">
+                    <td th:text="${certificado.atividade}">Atividade</td>
+                    <td th:text="${certificado.dataEmissao}">01/01/2026</td>
+                    <td th:text="${certificado.codigoValidacao}">ABC123</td>
+                    <td><a th:href="@{/certificados/{id}(id=${certificado.id})}">Ver</a></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(certificados)}">
+                    <td colspan="4">Nenhum certificado emitido ainda.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</th:block>
+</html>

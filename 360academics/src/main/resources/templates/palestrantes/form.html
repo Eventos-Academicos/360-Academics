@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Palestrante</h1>
+        <p>Preencha os dados do palestrante.</p>
+    </section>
+
+    <section class="section-card">
+        <form method="post"
+              th:action="${id} != null ? @{/palestrantes/{id}(id=${id})} : @{/palestrantes}">
+            <label for="nome">Nome</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="especialidade">Especialidade</label>
+            <input type="text" id="especialidade" name="especialidade" required>
+
+            <button type="submit">Salvar</button>
+        </form>
+    </section>
+</th:block>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Controle de Presença</h1>
+        <p>Confirme a presença dos participantes inscritos nesta atividade.</p>
+    </section>
+
+    <section class="section-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Participante</th>
+                    <th>Confirmada</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="presenca : ${presencas}">
+                    <td th:text="${presenca.participante}">Nome do participante</td>
+                    <td th:text="${presenca.confirmada}">Não</td>
+                    <td>
+                        <form method="post"
+                              th:action="@{/eventos/{eventoId}/atividades/{atividadeId}/presencas/{inscricaoId}/confirmar(eventoId=${eventoId},atividadeId=${atividadeId},inscricaoId=${presenca.inscricaoId})}"
+                              style="display:inline">
+                            <button type="submit">Confirmar presença</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(presencas)}">
+                    <td colspan="3">Nenhum participante inscrito nesta atividade.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</th:block>
+</html>

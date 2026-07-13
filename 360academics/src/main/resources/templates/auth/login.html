@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Entrar</h1>
+        <p>Acesse sua conta na plataforma 360 Academics.</p>
+    </section>
+
+    <section class="section-card">
+        <form method="post" th:action="@{/login}">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="senha">Senha</label>
+            <input type="password" id="senha" name="senha" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+    </section>
+
+    <section class="section-card callout">
+        <p>Ainda não tem uma conta?</p>
+        <a class="btn" th:href="@{/registro}">Criar conta</a>
+    </section>
+</th:block>
+</html>

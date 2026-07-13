@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Painel Administrativo</h1>
+        <p>Gerencie eventos, palestrantes, participantes e organizadores.</p>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Eventos</h2>
+            <p>Cadastrar e gerenciar eventos acadêmicos.</p>
+        </div>
+        <a class="btn" th:href="@{/eventos}">Gerenciar</a>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Palestrantes</h2>
+            <p>Cadastrar e gerenciar palestrantes.</p>
+        </div>
+        <a class="btn" th:href="@{/palestrantes}">Gerenciar</a>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Participantes</h2>
+            <p>Cadastrar e gerenciar participantes.</p>
+        </div>
+        <a class="btn" th:href="@{/participantes}">Gerenciar</a>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Organizadores</h2>
+            <p>Cadastrar e gerenciar organizadores.</p>
+        </div>
+        <a class="btn" th:href="@{/organizadores}">Gerenciar</a>
+    </section>
+</th:block>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Organizadores</h1>
+        <p>Organizadores responsáveis pelos eventos acadêmicos.</p>
+    </section>
+
+    <section class="section-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="organizador : ${organizadores}">
+                    <td th:text="${organizador.nome}">Nome</td>
+                    <td th:text="${organizador.email}">email@exemplo.com</td>
+                    <td><a th:href="@{/organizadores/{id}/editar(id=${organizador.id})}">Editar</a></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(organizadores)}">
+                    <td colspan="3">Nenhum organizador cadastrado ainda.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section-card callout">
+        <p>Cadastre um novo organizador.</p>
+        <a class="btn" th:href="@{/organizadores/novo}">Novo organizador</a>
+    </section>
+</th:block>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Histórico de Participação</h1>
+        <p>Eventos e atividades concluídas por você.</p>
+    </section>
+
+    <section class="section-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Conclusão</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${historico}">
+                    <td th:text="${item.evento}">Nome do evento</td>
+                    <td th:text="${item.dataConclusao}">01/01/2026</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(historico)}">
+                    <td colspan="2">Nenhuma participação concluída ainda.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</th:block>
+</html>
