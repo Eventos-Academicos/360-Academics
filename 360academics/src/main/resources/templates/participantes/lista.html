@@ -22,7 +22,12 @@
                     <td th:text="${participante.nome}">Nome</td>
                     <td th:text="${participante.email}">email@exemplo.com</td>
                     <td th:text="${participante.matricula}">2026000000</td>
-                    <td><a th:href="@{/participantes/{id}/editar(id=${participante.id})}">Editar</a></td>
+                    <td>
+                        <a th:href="@{/participantes/{id}/editar(id=${participante.id})}">Editar</a>
+                        <form th:action="@{/participantes/{id}/excluir(id=${participante.id})}" method="post" style="display:inline;">
+                            <button type="submit">Excluir</button>
+                        </form>
+                    </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(participantes)}">
                     <td colspan="4">Nenhum participante cadastrado ainda.</td>
