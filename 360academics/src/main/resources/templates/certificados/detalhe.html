@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Certificado</h1>
+        <p>Detalhes e validação do certificado digital.</p>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Download</h2>
+            <p>Baixe o certificado em formato digital.</p>
+        </div>
+        <a class="btn" th:href="@{/certificados/{id}(id=${id})}">Baixar certificado</a>
+    </section>
+</th:block>
+</html>

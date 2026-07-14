@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Detalhes da Atividade</h1>
+        <p>Informações e controle de presença desta atividade.</p>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Presença</h2>
+            <p>Confirme a presença dos participantes inscritos.</p>
+        </div>
+        <a class="btn" th:href="@{/eventos/{eventoId}/atividades/{id}/presencas(eventoId=${eventoId},id=${atividadeId})}">Controlar presença</a>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Gerenciar</h2>
+            <p>Editar ou remover esta atividade.</p>
+        </div>
+        <div>
+            <a class="btn" th:href="@{/eventos/{eventoId}/atividades/{id}/editar(eventoId=${eventoId},id=${atividadeId})}">Editar</a>
+            <form method="post" th:action="@{/eventos/{eventoId}/atividades/{id}/excluir(eventoId=${eventoId},id=${atividadeId})}" style="display:inline">
+                <button type="submit">Excluir</button>
+            </form>
+        </div>
+    </section>
+</th:block>
+</html>

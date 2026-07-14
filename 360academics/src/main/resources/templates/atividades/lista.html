@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Atividades do Evento</h1>
+        <p>Palestras, workshops e minicursos deste evento.</p>
+    </section>
+
+    <section class="section-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Início</th>
+                    <th>Fim</th>
+                    <th>Local</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="atividade : ${atividades}">
+                    <td th:text="${atividade.titulo}">Título</td>
+                    <td th:text="${atividade.horarioInicio}">09:00</td>
+                    <td th:text="${atividade.horarioFim}">10:00</td>
+                    <td th:text="${atividade.local}">Auditório</td>
+                    <td><a th:href="@{/eventos/{eventoId}/atividades/{id}(eventoId=${eventoId},id=${atividade.id})}">Ver</a></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(atividades)}">
+                    <td colspan="5">Nenhuma atividade cadastrada ainda.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section-card callout">
+        <p>Cadastre uma nova atividade para este evento.</p>
+        <a class="btn" th:href="@{/eventos/{eventoId}/atividades/nova(eventoId=${eventoId})}">Nova atividade</a>
+    </section>
+</th:block>
+</html>

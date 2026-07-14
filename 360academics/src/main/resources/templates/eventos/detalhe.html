@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Detalhes do Evento</h1>
+        <p>Informações, atividades e inscrições deste evento.</p>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Atividades</h2>
+            <p>Palestras, workshops e minicursos do evento.</p>
+        </div>
+        <a class="btn" th:href="@{/eventos/{id}/atividades(id=${id})}">Ver atividades</a>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Inscrição</h2>
+            <p>Inscreva-se neste evento.</p>
+        </div>
+        <a class="btn" th:href="@{/eventos/{id}/inscricoes/nova(id=${id})}">Inscrever-se</a>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>Gerenciar</h2>
+            <p>Editar ou remover este evento.</p>
+        </div>
+        <div>
+            <a class="btn" th:href="@{/eventos/{id}/editar(id=${id})}">Editar</a>
+            <form method="post" th:action="@{/eventos/{id}/excluir(id=${id})}" style="display:inline">
+                <button type="submit">Excluir</button>
+            </form>
+        </div>
+    </section>
+</th:block>
+</html>

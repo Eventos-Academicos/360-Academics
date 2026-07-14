@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Participantes</h1>
+        <p>Alunos e participantes cadastrados na plataforma.</p>
+    </section>
+
+    <section class="section-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Matrícula</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="participante : ${participantes}">
+                    <td th:text="${participante.nome}">Nome</td>
+                    <td th:text="${participante.email}">email@exemplo.com</td>
+                    <td th:text="${participante.matricula}">2026000000</td>
+                    <td>
+                        <a th:href="@{/participantes/{id}/editar(id=${participante.id})}">Editar</a>
+                        <form th:action="@{/participantes/{id}/excluir(id=${participante.id})}" method="post" style="display:inline;">
+                            <button type="submit">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(participantes)}">
+                    <td colspan="4">Nenhum participante cadastrado ainda.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section-card callout">
+        <p>Cadastre um novo participante.</p>
+        <a class="btn" th:href="@{/participantes/novo}">Novo participante</a>
+    </section>
+</th:block>
+</html>

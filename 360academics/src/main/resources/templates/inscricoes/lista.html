@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Minhas Inscrições</h1>
+        <p>Eventos em que você está inscrito.</p>
+    </section>
+
+    <section class="section-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Data da inscrição</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="inscricao : ${inscricoes}">
+                    <td th:text="${inscricao.evento}">Nome do evento</td>
+                    <td th:text="${inscricao.dataInscricao}">01/01/2026</td>
+                    <td th:text="${inscricao.status}">Confirmada</td>
+                    <td>
+                        <form method="post" th:action="@{/inscricoes/{id}/cancelar(id=${inscricao.id})}" style="display:inline">
+                            <button type="submit">Cancelar</button>
+                        </form>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(inscricoes)}">
+                    <td colspan="4">Você ainda não possui inscrições.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="section-card callout">
+        <p>Encontre um evento acadêmico para participar.</p>
+        <a class="btn" th:href="@{/eventos}">Ver eventos</a>
+    </section>
+</th:block>
+</html>

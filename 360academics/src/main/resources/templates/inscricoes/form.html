@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Confirmar Inscrição</h1>
+        <p>Confirme sua inscrição neste evento acadêmico.</p>
+    </section>
+
+    <section class="section-card">
+        <form method="post" th:action="@{/eventos/{eventoId}/inscricoes(eventoId=${eventoId})}">
+            <button type="submit">Confirmar inscrição</button>
+        </form>
+    </section>
+</th:block>
+</html>
