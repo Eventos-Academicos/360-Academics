@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Histórico de Participação</h1>
+        <p>Registre a conclusão de um evento por um participante.</p>
+    </section>
+
+    <section class="section-card">
+        <form method="post"
+              th:action="${id} != null ? @{/historico/{id}(id=${id})} : @{/historico}">
+            <label for="participanteId">ID do Participante</label>
+            <input type="number" id="participanteId" name="participanteId" required
+                   th:value="${item != null ? item.participante.id : ''}">
+
+            <label for="eventoId">ID do Evento</label>
+            <input type="number" id="eventoId" name="eventoId" required
+                   th:value="${item != null ? item.evento.id : ''}">
+
+            <label for="dataConclusao">Data de conclusão</label>
+            <input type="date" id="dataConclusao" name="dataConclusao" required
+                   th:value="${item != null ? item.dataConclusao : ''}">
+
+            <button type="submit">Salvar</button>
+        </form>
+    </section>
+</th:block>
+</html>

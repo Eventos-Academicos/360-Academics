@@ -1,24 +1,30 @@
 package br.edu.iff.ccc._academics.controller.view;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import br.edu.iff.ccc._academics.dto.AtividadeRequest;
+import br.edu.iff.ccc._academics.service.AtividadeService;
 
 @Controller
 @RequestMapping("/eventos/{eventoId}/atividades")
 public class AtividadeViewController {
 
+    private final AtividadeService service;
+
+    public AtividadeViewController(AtividadeService service) {
+        this.service = service;
+    }
+
     @GetMapping
     public String listar(@PathVariable Long eventoId, Model model) {
         model.addAttribute("titulo", "Atividades do Evento");
         model.addAttribute("eventoId", eventoId);
-        model.addAttribute("atividades", List.of());
+        model.addAttribute("atividades", service.listarPorEvento(eventoId));
         return "atividades/lista";
     }
 
@@ -30,12 +36,8 @@ public class AtividadeViewController {
     }
 
     @PostMapping
-    public String criar(@PathVariable Long eventoId,
-            @RequestParam String titulo,
-            @RequestParam String horarioInicio,
-            @RequestParam String horarioFim,
-            @RequestParam String local,
-            @RequestParam Long palestranteId) {
+    public String criar(@PathVariable Long eventoId, AtividadeRequest request) {
+        service.criar(eventoId, request);
         return "redirect:/eventos/" + eventoId + "/atividades";
     }
 
@@ -44,6 +46,7 @@ public class AtividadeViewController {
         model.addAttribute("titulo", "Detalhes da Atividade");
         model.addAttribute("eventoId", eventoId);
         model.addAttribute("atividadeId", atividadeId);
+        model.addAttribute("atividade", service.buscarPorId(atividadeId));
         return "atividades/detalhe";
     }
 
@@ -52,21 +55,19 @@ public class AtividadeViewController {
         model.addAttribute("titulo", "Editar Atividade");
         model.addAttribute("eventoId", eventoId);
         model.addAttribute("atividadeId", atividadeId);
+        model.addAttribute("atividade", service.buscarPorId(atividadeId));
         return "atividades/form";
     }
 
     @PostMapping("/{atividadeId}")
-    public String atualizar(@PathVariable Long eventoId, @PathVariable Long atividadeId,
-            @RequestParam String titulo,
-            @RequestParam String horarioInicio,
-            @RequestParam String horarioFim,
-            @RequestParam String local,
-            @RequestParam Long palestranteId) {
+    public String atualizar(@PathVariable Long eventoId, @PathVariable Long atividadeId, AtividadeRequest request) {
+        service.atualizar(atividadeId, request);
         return "redirect:/eventos/" + eventoId + "/atividades/" + atividadeId;
     }
 
     @PostMapping("/{atividadeId}/excluir")
     public String excluir(@PathVariable Long eventoId, @PathVariable Long atividadeId) {
+        service.remover(atividadeId);
         return "redirect:/eventos/" + eventoId + "/atividades";
     }
 

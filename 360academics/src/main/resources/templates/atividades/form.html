@@ -11,19 +11,24 @@
         <form method="post"
               th:action="${atividadeId} != null ? @{/eventos/{eventoId}/atividades/{id}(eventoId=${eventoId},id=${atividadeId})} : @{/eventos/{eventoId}/atividades(eventoId=${eventoId})}">
             <label for="titulo">Título</label>
-            <input type="text" id="titulo" name="titulo" required>
+            <input type="text" id="titulo" name="titulo" required
+                   th:value="${atividade != null ? atividade.titulo : ''}">
 
             <label for="horarioInicio">Início</label>
-            <input type="datetime-local" id="horarioInicio" name="horarioInicio" required>
+            <input type="datetime-local" id="horarioInicio" name="horarioInicio" required
+                   th:value="${atividade != null ? atividade.horarioInicio : ''}">
 
             <label for="horarioFim">Fim</label>
-            <input type="datetime-local" id="horarioFim" name="horarioFim" required>
+            <input type="datetime-local" id="horarioFim" name="horarioFim" required
+                   th:value="${atividade != null ? atividade.horarioFim : ''}">
 
             <label for="local">Local</label>
-            <input type="text" id="local" name="local" required>
+            <input type="text" id="local" name="local" required
+                   th:value="${atividade != null ? atividade.local : ''}">
 
-            <label for="palestranteId">Palestrante</label>
-            <input type="number" id="palestranteId" name="palestranteId" required>
+            <label for="palestranteId">ID do Palestrante</label>
+            <input type="number" id="palestranteId" name="palestranteId" required
+                   th:value="${atividade != null ? atividade.palestrante.id : ''}">
 
             <button type="submit">Salvar</button>
         </form>

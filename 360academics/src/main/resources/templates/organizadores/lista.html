@@ -20,7 +20,12 @@
                 <tr th:each="organizador : ${organizadores}">
                     <td th:text="${organizador.nome}">Nome</td>
                     <td th:text="${organizador.email}">email@exemplo.com</td>
-                    <td><a th:href="@{/organizadores/{id}/editar(id=${organizador.id})}">Editar</a></td>
+                    <td>
+                        <a th:href="@{/organizadores/{id}/editar(id=${organizador.id})}">Editar</a>
+                        <form th:action="@{/organizadores/{id}/excluir(id=${organizador.id})}" method="post" style="display:inline;">
+                            <button type="submit">Excluir</button>
+                        </form>
+                    </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(organizadores)}">
                     <td colspan="3">Nenhum organizador cadastrado ainda.</td>

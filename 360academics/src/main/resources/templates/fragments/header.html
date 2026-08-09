@@ -11,7 +11,12 @@
             <a th:href="@{/certificados}" th:text="#{nav.certificados}">Certificados</a>
             <a th:href="@{/admin}" th:text="#{nav.admin}">Painel</a>
             <a th:href="@{/sobre}" th:text="#{nav.about}">Sobre</a>
-            <a th:href="@{/login}" th:text="#{nav.login}">Entrar</a>
+            <span th:if="${usuarioLogado != null}">
+                Olá, <span th:text="${usuarioLogado.nome}">Nome</span>
+                (<span th:text="${tipoUsuario}">TIPO</span>)
+                — <a th:href="@{/logout}">Sair</a>
+            </span>
+            <a th:if="${usuarioLogado == null}" th:href="@{/login}" th:text="#{nav.login}">Entrar</a>
         </nav>
     </div>
 </header>

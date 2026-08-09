@@ -38,6 +38,15 @@ main.page-content {
     border-radius: 10px;
 }
 
+.alert-erro {
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 1rem;
+    background: #fdecea;
+    color: #611a15;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+}
+
 .site-header,
 .site-footer {
     background: var(--surface);

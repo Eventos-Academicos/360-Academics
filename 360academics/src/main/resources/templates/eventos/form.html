@@ -11,19 +11,24 @@
         <form method="post"
               th:action="${id} != null ? @{/eventos/{id}(id=${id})} : @{/eventos}">
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" required>
+            <input type="text" id="nome" name="nome" required
+                   th:value="${evento != null ? evento.nome : ''}">
 
             <label for="descricao">Descrição</label>
-            <textarea id="descricao" name="descricao" rows="3"></textarea>
+            <textarea id="descricao" name="descricao" rows="3"
+                      th:text="${evento != null ? evento.descricao : ''}"></textarea>
 
             <label for="dataInicio">Data de início</label>
-            <input type="date" id="dataInicio" name="dataInicio" required>
+            <input type="date" id="dataInicio" name="dataInicio" required
+                   th:value="${evento != null ? evento.dataInicio : ''}">
 
             <label for="dataFim">Data de fim</label>
-            <input type="date" id="dataFim" name="dataFim" required>
+            <input type="date" id="dataFim" name="dataFim" required
+                   th:value="${evento != null ? evento.dataFim : ''}">
 
             <label for="limiteVagas">Limite de vagas</label>
-            <input type="number" id="limiteVagas" name="limiteVagas" min="1" required>
+            <input type="number" id="limiteVagas" name="limiteVagas" min="1" required
+                   th:value="${evento != null ? evento.limiteVagas : ''}">
 
             <button type="submit">Salvar</button>
         </form>

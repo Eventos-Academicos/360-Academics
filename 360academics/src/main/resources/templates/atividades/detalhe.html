@@ -3,8 +3,15 @@
       th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
 <th:block th:fragment="content">
     <section class="hero">
-        <h1 th:text="${titulo}">Detalhes da Atividade</h1>
+        <h1 th:text="${atividade.titulo}">Detalhes da Atividade</h1>
         <p>Informações e controle de presença desta atividade.</p>
+    </section>
+
+    <section class="section-card">
+        <p><strong>Início:</strong> <span th:text="${atividade.horarioInicio}">09:00</span></p>
+        <p><strong>Fim:</strong> <span th:text="${atividade.horarioFim}">10:00</span></p>
+        <p><strong>Local:</strong> <span th:text="${atividade.local}">Auditório</span></p>
+        <p><strong>Palestrante:</strong> <span th:text="${atividade.palestrante.nome}">Nome</span></p>
     </section>
 
     <section class="section-card callout">

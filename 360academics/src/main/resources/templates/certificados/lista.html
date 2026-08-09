@@ -19,7 +19,7 @@
             </thead>
             <tbody>
                 <tr th:each="certificado : ${certificados}">
-                    <td th:text="${certificado.atividade}">Atividade</td>
+                    <td th:text="${certificado.atividade.titulo}">Atividade</td>
                     <td th:text="${certificado.dataEmissao}">01/01/2026</td>
                     <td th:text="${certificado.codigoValidacao}">ABC123</td>
                     <td><a th:href="@{/certificados/{id}(id=${certificado.id})}">Ver</a></td>

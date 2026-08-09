@@ -2,20 +2,22 @@ package br.edu.iff.ccc._academics.repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+
+import org.springframework.stereotype.Repository;
 
 import br.edu.iff.ccc._academics.entities.Participante;
 
+@Repository
 public class ParticipanteRepositorio {
 
-    private List<Participante> participantes;
+    private final List<Participante> participantes = new ArrayList<>();
+    private final AtomicLong proximoId = new AtomicLong(1);
 
-    public ParticipanteRepositorio() {
-        this.participantes = new ArrayList<>();
-    }
-
-    public void salvar(Participante participante) {
+    public Participante salvar(Participante participante) {
+        participante.setId(proximoId.getAndIncrement());
         this.participantes.add(participante);
-        System.out.println("Participante salvo: " + participante.getNome());
+        return participante;
     }
 
     public List<Participante> listarTodos() {

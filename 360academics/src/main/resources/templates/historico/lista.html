@@ -11,20 +11,34 @@
         <table>
             <thead>
                 <tr>
+                    <th>Participante</th>
                     <th>Evento</th>
                     <th>Conclusão</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="item : ${historico}">
-                    <td th:text="${item.evento}">Nome do evento</td>
+                    <td th:text="${item.participante.nome}">Nome do participante</td>
+                    <td th:text="${item.evento.nome}">Nome do evento</td>
                     <td th:text="${item.dataConclusao}">01/01/2026</td>
+                    <td>
+                        <a th:href="@{/historico/{id}/editar(id=${item.id})}">Editar</a>
+                        <form th:action="@{/historico/{id}/excluir(id=${item.id})}" method="post" style="display:inline;">
+                            <button type="submit">Excluir</button>
+                        </form>
+                    </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(historico)}">
-                    <td colspan="2">Nenhuma participação concluída ainda.</td>
+                    <td colspan="4">Nenhuma participação concluída ainda.</td>
                 </tr>
             </tbody>
         </table>
+    </section>
+
+    <section class="section-card callout">
+        <p>Registrar uma nova participação concluída.</p>
+        <a class="btn" th:href="@{/historico/novo}">Nova participação</a>
     </section>
 </th:block>
 </html>
