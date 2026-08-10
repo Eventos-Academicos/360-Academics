@@ -24,7 +24,7 @@
                     <td th:text="${evento.dataInicio}">01/01/2026</td>
                     <td th:text="${evento.dataFim}">02/01/2026</td>
                     <td th:text="${evento.limiteVagas}">100</td>
-                    <td><a th:href="@{/eventos/{id}(id=${evento.id})}">Ver</a></td>
+                    <td><a class="btn-secondary" th:href="@{/eventos/{id}(id=${evento.id})}">Ver</a></td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(eventos)}">
                     <td colspan="5">Nenhum evento cadastrado ainda.</td>

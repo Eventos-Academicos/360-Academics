@@ -2,6 +2,8 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
 <th:block th:fragment="content">
+    <p><a class="back-link" th:href="@{/eventos/{eventoId}/atividades(eventoId=${eventoId})}">&larr; Voltar às atividades</a></p>
+
     <section class="hero">
         <h1 th:text="${atividade.titulo}">Detalhes da Atividade</h1>
         <p>Informações e controle de presença desta atividade.</p>
@@ -28,9 +30,9 @@
             <p>Editar ou remover esta atividade.</p>
         </div>
         <div>
-            <a class="btn" th:href="@{/eventos/{eventoId}/atividades/{id}/editar(eventoId=${eventoId},id=${atividadeId})}">Editar</a>
+            <a class="btn-secondary" th:href="@{/eventos/{eventoId}/atividades/{id}/editar(eventoId=${eventoId},id=${atividadeId})}">Editar</a>
             <form method="post" th:action="@{/eventos/{eventoId}/atividades/{id}/excluir(eventoId=${eventoId},id=${atividadeId})}" style="display:inline">
-                <button type="submit">Excluir</button>
+                <button type="submit" class="btn-danger">Excluir</button>
             </form>
         </div>
     </section>

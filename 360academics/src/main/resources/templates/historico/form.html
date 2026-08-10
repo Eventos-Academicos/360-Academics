@@ -10,13 +10,27 @@
     <section class="section-card">
         <form method="post"
               th:action="${id} != null ? @{/historico/{id}(id=${id})} : @{/historico}">
-            <label for="participanteId">ID do Participante</label>
-            <input type="number" id="participanteId" name="participanteId" required
-                   th:value="${item != null ? item.participante.id : ''}">
+            <label for="participanteId">Participante</label>
+            <select id="participanteId" name="participanteId" required>
+                <option value="">Selecione um participante</option>
+                <option th:each="participante : ${participantes}"
+                        th:value="${participante.id}"
+                        th:text="${participante.nome}"
+                        th:selected="${item != null and item.participante.id == participante.id}">
+                    Nome do participante
+                </option>
+            </select>
 
-            <label for="eventoId">ID do Evento</label>
-            <input type="number" id="eventoId" name="eventoId" required
-                   th:value="${item != null ? item.evento.id : ''}">
+            <label for="eventoId">Evento</label>
+            <select id="eventoId" name="eventoId" required>
+                <option value="">Selecione um evento</option>
+                <option th:each="evento : ${eventos}"
+                        th:value="${evento.id}"
+                        th:text="${evento.nome}"
+                        th:selected="${item != null and item.evento.id == evento.id}">
+                    Nome do evento
+                </option>
+            </select>
 
             <label for="dataConclusao">Data de conclusão</label>
             <input type="date" id="dataConclusao" name="dataConclusao" required

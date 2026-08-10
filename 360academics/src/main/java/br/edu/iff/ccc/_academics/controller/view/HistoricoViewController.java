@@ -8,16 +8,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.iff.ccc._academics.dto.HistoricoRequest;
+import br.edu.iff.ccc._academics.service.EventoService;
 import br.edu.iff.ccc._academics.service.HistoricoService;
+import br.edu.iff.ccc._academics.service.ParticipanteService;
 
 @Controller
 @RequestMapping("/historico")
 public class HistoricoViewController {
 
     private final HistoricoService service;
+    private final ParticipanteService participanteService;
+    private final EventoService eventoService;
 
-    public HistoricoViewController(HistoricoService service) {
+    public HistoricoViewController(HistoricoService service, ParticipanteService participanteService,
+            EventoService eventoService) {
         this.service = service;
+        this.participanteService = participanteService;
+        this.eventoService = eventoService;
     }
 
     @GetMapping
@@ -30,6 +37,7 @@ public class HistoricoViewController {
     @GetMapping("/novo")
     public String novo(Model model) {
         model.addAttribute("titulo", "Registrar Participação Concluída");
+        adicionarListasDeSelecao(model);
         return "historico/form";
     }
 
@@ -44,6 +52,7 @@ public class HistoricoViewController {
         model.addAttribute("titulo", "Editar Participação");
         model.addAttribute("id", id);
         model.addAttribute("item", service.buscarPorId(id));
+        adicionarListasDeSelecao(model);
         return "historico/form";
     }
 
@@ -57,6 +66,11 @@ public class HistoricoViewController {
     public String excluir(@PathVariable Long id) {
         service.remover(id);
         return "redirect:/historico";
+    }
+
+    private void adicionarListasDeSelecao(Model model) {
+        model.addAttribute("participantes", participanteService.listarTodos());
+        model.addAttribute("eventos", eventoService.listarTodos());
     }
 
 }

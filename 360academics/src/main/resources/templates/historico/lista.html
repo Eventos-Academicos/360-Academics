@@ -23,9 +23,9 @@
                     <td th:text="${item.evento.nome}">Nome do evento</td>
                     <td th:text="${item.dataConclusao}">01/01/2026</td>
                     <td>
-                        <a th:href="@{/historico/{id}/editar(id=${item.id})}">Editar</a>
+                        <a class="btn-secondary" th:href="@{/historico/{id}/editar(id=${item.id})}">Editar</a>
                         <form th:action="@{/historico/{id}/excluir(id=${item.id})}" method="post" style="display:inline;">
-                            <button type="submit">Excluir</button>
+                            <button type="submit" class="btn-danger">Excluir</button>
                         </form>
                     </td>
                 </tr>

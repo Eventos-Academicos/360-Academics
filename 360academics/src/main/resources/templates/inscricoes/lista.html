@@ -24,10 +24,10 @@
                     <td th:text="${inscricao.status}">Confirmada</td>
                     <td>
                         <form method="post" th:action="@{/inscricoes/{id}/cancelar(id=${inscricao.id})}" style="display:inline">
-                            <button type="submit">Cancelar</button>
+                            <button type="submit" class="btn-secondary">Cancelar</button>
                         </form>
                         <form method="post" th:action="@{/inscricoes/{id}/excluir(id=${inscricao.id})}" style="display:inline">
-                            <button type="submit">Excluir</button>
+                            <button type="submit" class="btn-danger">Excluir</button>
                         </form>
                     </td>
                 </tr>

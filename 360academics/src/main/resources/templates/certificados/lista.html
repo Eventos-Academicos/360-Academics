@@ -22,7 +22,7 @@
                     <td th:text="${certificado.atividade.titulo}">Atividade</td>
                     <td th:text="${certificado.dataEmissao}">01/01/2026</td>
                     <td th:text="${certificado.codigoValidacao}">ABC123</td>
-                    <td><a th:href="@{/certificados/{id}(id=${certificado.id})}">Ver</a></td>
+                    <td><a class="btn-secondary" th:href="@{/certificados/{id}(id=${certificado.id})}">Ver</a></td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(certificados)}">
                     <td colspan="4">Nenhum certificado emitido ainda.</td>

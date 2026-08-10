@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.iff.ccc._academics.dto.AtividadeRequest;
 import br.edu.iff.ccc._academics.service.AtividadeService;
+import br.edu.iff.ccc._academics.service.PalestranteService;
 
 @Controller
 @RequestMapping("/eventos/{eventoId}/atividades")
 public class AtividadeViewController {
 
     private final AtividadeService service;
+    private final PalestranteService palestranteService;
 
-    public AtividadeViewController(AtividadeService service) {
+    public AtividadeViewController(AtividadeService service, PalestranteService palestranteService) {
         this.service = service;
+        this.palestranteService = palestranteService;
     }
 
     @GetMapping
@@ -32,6 +35,7 @@ public class AtividadeViewController {
     public String nova(@PathVariable Long eventoId, Model model) {
         model.addAttribute("titulo", "Nova Atividade");
         model.addAttribute("eventoId", eventoId);
+        model.addAttribute("palestrantes", palestranteService.listarTodos());
         return "atividades/form";
     }
 
@@ -56,6 +60,7 @@ public class AtividadeViewController {
         model.addAttribute("eventoId", eventoId);
         model.addAttribute("atividadeId", atividadeId);
         model.addAttribute("atividade", service.buscarPorId(atividadeId));
+        model.addAttribute("palestrantes", palestranteService.listarTodos());
         return "atividades/form";
     }
 

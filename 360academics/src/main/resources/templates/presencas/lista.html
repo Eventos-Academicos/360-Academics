@@ -2,6 +2,8 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
 <th:block th:fragment="content">
+    <p><a class="back-link" th:href="@{/eventos/{eventoId}/atividades/{atividadeId}(eventoId=${eventoId},atividadeId=${atividadeId})}">&larr; Voltar à atividade</a></p>
+
     <section class="hero">
         <h1 th:text="${titulo}">Controle de Presença</h1>
         <p>Confirme a presença dos participantes inscritos nesta atividade.</p>
@@ -29,7 +31,7 @@
                         <form method="post"
                               th:action="@{/eventos/{eventoId}/atividades/{atividadeId}/presencas/{inscricaoId}/desconfirmar(eventoId=${eventoId},atividadeId=${atividadeId},inscricaoId=${presenca.inscricao.id})}"
                               style="display:inline">
-                            <button type="submit">Remover presença</button>
+                            <button type="submit" class="btn-secondary">Remover presença</button>
                         </form>
                         <form th:if="${presenca.confirmada}" method="post"
                               th:action="@{/certificados/gerar/{inscricaoId}/{atividadeId}(inscricaoId=${presenca.inscricao.id},atividadeId=${atividadeId})}"
