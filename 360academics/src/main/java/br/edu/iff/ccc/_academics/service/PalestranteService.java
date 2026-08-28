@@ -1,11 +1,13 @@
 package br.edu.iff.ccc._academics.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import br.edu.iff.ccc._academics.dto.PalestranteRequest;
 import br.edu.iff.ccc._academics.entities.Palestrante;
+import br.edu.iff.ccc._academics.exception.RegraNegocioException;
 import br.edu.iff.ccc._academics.repository.PalestranteRepositorio;
 
 @Service
@@ -18,36 +20,32 @@ public class PalestranteService {
     }
 
     public List<Palestrante> listarTodos() {
-        return repositorio.listarTodos();
+        return repositorio.findAll();
     }
 
-    public Palestrante buscarPorId(Long id) {
-        return repositorio.buscarPorId(id);
+    public Palestrante buscarPorId(UUID id) {
+        return repositorio.findById(id)
+                .orElseThrow(() -> new RegraNegocioException("Palestrante não encontrado."));
     }
 
     public Palestrante criar(PalestranteRequest request) {
         Palestrante palestrante = new Palestrante();
         preencher(palestrante, request);
         palestrante.setSenha(request.getSenha());
-        return repositorio.salvar(palestrante);
+        return repositorio.save(palestrante);
     }
 
-    public Palestrante atualizar(Long id, PalestranteRequest request) {
-        Palestrante palestrante = repositorio.buscarPorId(id);
-        if (palestrante != null) {
-            preencher(palestrante, request);
-            if (request.getSenha() != null && !request.getSenha().isBlank()) {
-                palestrante.setSenha(request.getSenha());
-            }
+    public Palestrante atualizar(UUID id, PalestranteRequest request) {
+        Palestrante palestrante = buscarPorId(id);
+        preencher(palestrante, request);
+        if (request.getSenha() != null && !request.getSenha().isBlank()) {
+            palestrante.setSenha(request.getSenha());
         }
-        return palestrante;
+        return repositorio.save(palestrante);
     }
 
-    public void remover(Long id) {
-        Palestrante palestrante = repositorio.buscarPorId(id);
-        if (palestrante != null) {
-            repositorio.remover(palestrante);
-        }
+    public void remover(UUID id) {
+        repositorio.deleteById(id);
     }
 
     private void preencher(Palestrante palestrante, PalestranteRequest request) {

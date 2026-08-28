@@ -1,5 +1,7 @@
 package br.edu.iff.ccc._academics.controller.view;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,7 +42,7 @@ public class PalestranteViewController {
     }
 
     @GetMapping("/{id}/editar")
-    public String editar(@PathVariable Long id, Model model) {
+    public String editar(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Editar Palestrante");
         model.addAttribute("id", id);
         model.addAttribute("palestrante", service.buscarPorId(id));
@@ -48,13 +50,13 @@ public class PalestranteViewController {
     }
 
     @PostMapping("/{id}")
-    public String atualizar(@PathVariable Long id, PalestranteRequest request) {
+    public String atualizar(@PathVariable UUID id, PalestranteRequest request) {
         service.atualizar(id, request);
         return "redirect:/palestrantes";
     }
 
     @PostMapping("/{id}/excluir")
-    public String excluir(@PathVariable Long id) {
+    public String excluir(@PathVariable UUID id) {
         service.remover(id);
         return "redirect:/palestrantes";
     }

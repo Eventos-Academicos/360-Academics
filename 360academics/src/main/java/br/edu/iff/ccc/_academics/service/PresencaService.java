@@ -2,6 +2,7 @@ package br.edu.iff.ccc._academics.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,15 @@ public class PresencaService {
         this.inscricaoService = inscricaoService;
     }
 
-    public List<Presenca> listarPorAtividade(Long atividadeId) {
+    public List<Presenca> listarPorAtividade(UUID atividadeId) {
         Atividade atividade = atividadeService.buscarPorId(atividadeId);
         List<Inscricao> inscricoes = inscricaoService.listarPorEvento(atividade.getEvento().getId());
 
         List<Presenca> resultado = new ArrayList<>();
         for (Inscricao inscricao : inscricoes) {
-            Presenca presenca = repositorio.buscarPorInscricaoEAtividade(inscricao.getId(), atividadeId);
+            Presenca presenca = repositorio
+                    .findByInscricaoIdAndAtividadeId(inscricao.getId(), atividadeId)
+                    .orElse(null);
             if (presenca == null) {
                 presenca = new Presenca();
                 presenca.setInscricao(inscricao);
@@ -43,16 +46,18 @@ public class PresencaService {
         return resultado;
     }
 
-    public boolean estaConfirmada(Long inscricaoId, Long atividadeId) {
-        Presenca presenca = repositorio.buscarPorInscricaoEAtividade(inscricaoId, atividadeId);
-        return presenca != null && presenca.isConfirmada();
+    public boolean estaConfirmada(UUID inscricaoId, UUID atividadeId) {
+        return repositorio.findByInscricaoIdAndAtividadeId(inscricaoId, atividadeId)
+                .map(Presenca::isConfirmada)
+                .orElse(false);
     }
 
-    public void confirmar(Long atividadeId, Long inscricaoId) {
+    public void confirmar(UUID atividadeId, UUID inscricaoId) {
         Atividade atividade = atividadeService.buscarPorId(atividadeId);
         Inscricao inscricao = inscricaoService.buscarPorId(inscricaoId);
 
-        boolean conflitaHorario = repositorio.listarConfirmadasPorParticipante(inscricao.getParticipante().getId())
+        boolean conflitaHorario = repositorio
+                .findByConfirmadaTrueAndInscricao_Participante_Id(inscricao.getParticipante().getId())
                 .stream()
                 .filter(p -> !p.getAtividade().getId().equals(atividadeId))
                 .anyMatch(p -> sobrepoe(p.getAtividade(), atividade));
@@ -61,27 +66,24 @@ public class PresencaService {
                     "Participante já possui presença confirmada em outra atividade no mesmo horário.");
         }
 
-        Presenca presenca = repositorio.buscarPorInscricaoEAtividade(inscricaoId, atividadeId);
-        if (presenca == null) {
-            presenca = new Presenca();
-            presenca.setAtividade(atividade);
-            presenca.setInscricao(inscricao);
-            presenca.setConfirmada(true);
-            repositorio.salvar(presenca);
-        } else {
-            presenca.setConfirmada(true);
-        }
+        Presenca presenca = repositorio.findByInscricaoIdAndAtividadeId(inscricaoId, atividadeId)
+                .orElseGet(() -> {
+                    Presenca nova = new Presenca();
+                    nova.setAtividade(atividade);
+                    nova.setInscricao(inscricao);
+                    return nova;
+                });
+        presenca.setConfirmada(true);
+        repositorio.save(presenca);
     }
 
     private boolean sobrepoe(Atividade a, Atividade b) {
         return a.getHorarioInicio().isBefore(b.getHorarioFim()) && b.getHorarioInicio().isBefore(a.getHorarioFim());
     }
 
-    public void desconfirmar(Long atividadeId, Long inscricaoId) {
-        Presenca presenca = repositorio.buscarPorInscricaoEAtividade(inscricaoId, atividadeId);
-        if (presenca != null) {
-            repositorio.remover(presenca);
-        }
+    public void desconfirmar(UUID atividadeId, UUID inscricaoId) {
+        repositorio.findByInscricaoIdAndAtividadeId(inscricaoId, atividadeId)
+                .ifPresent(repositorio::delete);
     }
 
 }

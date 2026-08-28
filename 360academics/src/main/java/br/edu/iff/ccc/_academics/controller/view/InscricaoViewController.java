@@ -1,5 +1,7 @@
 package br.edu.iff.ccc._academics.controller.view;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,26 +31,26 @@ public class InscricaoViewController {
     }
 
     @PostMapping("/inscricoes/{id}/cancelar")
-    public String cancelar(@PathVariable Long id) {
+    public String cancelar(@PathVariable UUID id) {
         service.atualizarStatus(id, "Cancelada");
         return "redirect:/inscricoes";
     }
 
     @PostMapping("/inscricoes/{id}/excluir")
-    public String excluir(@PathVariable Long id) {
+    public String excluir(@PathVariable UUID id) {
         service.remover(id);
         return "redirect:/inscricoes";
     }
 
     @GetMapping("/eventos/{eventoId}/inscricoes/nova")
-    public String nova(@PathVariable Long eventoId, Model model) {
+    public String nova(@PathVariable UUID eventoId, Model model) {
         model.addAttribute("titulo", "Confirmar Inscrição");
         model.addAttribute("eventoId", eventoId);
         return "inscricoes/form";
     }
 
     @PostMapping("/eventos/{eventoId}/inscricoes")
-    public String criar(@PathVariable Long eventoId, HttpSession session) {
+    public String criar(@PathVariable UUID eventoId, HttpSession session) {
         Participante participante = exigirParticipanteLogado(session);
         InscricaoRequest request = new InscricaoRequest();
         request.setParticipanteId(participante.getId());

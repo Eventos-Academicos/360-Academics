@@ -32,18 +32,20 @@ public class CertificadoService {
     }
 
     public List<Certificado> listarTodos() {
-        return repositorio.listarTodos();
+        return repositorio.findAll();
     }
 
-    public Certificado buscarPorId(Long id) {
-        return repositorio.buscarPorId(id);
+    public Certificado buscarPorId(UUID id) {
+        return repositorio.findById(id)
+                .orElseThrow(() -> new RegraNegocioException("Certificado não encontrado."));
     }
 
-    public Certificado gerar(Long inscricaoId, Long atividadeId, Long palestranteEmissorId) {
+    public Certificado gerar(UUID inscricaoId, UUID atividadeId, UUID palestranteEmissorId) {
         Atividade atividade = atividadeService.buscarPorId(atividadeId);
         Inscricao inscricao = inscricaoService.buscarPorId(inscricaoId);
 
-        if (!atividade.getPalestrante().getId().equals(palestranteEmissorId)) {
+        if (atividade.getPalestrante() == null
+                || !atividade.getPalestrante().getId().equals(palestranteEmissorId)) {
             throw new RegraNegocioException(
                     "Somente o palestrante responsável pela atividade pode emitir este certificado.");
         }
@@ -56,26 +58,21 @@ public class CertificadoService {
         certificado.setAtividade(atividade);
         certificado.setDataEmissao(LocalDate.now());
         certificado.setCodigoValidacao(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
-        repositorio.salvar(certificado);
+        repositorio.save(certificado);
 
         historicoService.registrarConclusao(inscricao.getParticipante(), atividade.getEvento());
 
         return certificado;
     }
 
-    public Certificado atualizar(Long id, CertificadoRequest request) {
-        Certificado certificado = repositorio.buscarPorId(id);
-        if (certificado != null) {
-            certificado.setCodigoValidacao(request.getCodigoValidacao());
-        }
-        return certificado;
+    public Certificado atualizar(UUID id, CertificadoRequest request) {
+        Certificado certificado = buscarPorId(id);
+        certificado.setCodigoValidacao(request.getCodigoValidacao());
+        return repositorio.save(certificado);
     }
 
-    public void remover(Long id) {
-        Certificado certificado = repositorio.buscarPorId(id);
-        if (certificado != null) {
-            repositorio.remover(certificado);
-        }
+    public void remover(UUID id) {
+        repositorio.deleteById(id);
     }
 
 }

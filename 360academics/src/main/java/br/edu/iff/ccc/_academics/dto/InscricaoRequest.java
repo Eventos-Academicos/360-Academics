@@ -1,14 +1,16 @@
 package br.edu.iff.ccc._academics.dto;
 
+import java.util.UUID;
+
 public class InscricaoRequest {
 
-    private Long participanteId;
+    private UUID participanteId;
 
-    public Long getParticipanteId() {
+    public UUID getParticipanteId() {
         return participanteId;
     }
 
-    public void setParticipanteId(Long participanteId) {
+    public void setParticipanteId(UUID participanteId) {
         this.participanteId = participanteId;
     }
 

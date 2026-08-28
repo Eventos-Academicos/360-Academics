@@ -9,6 +9,7 @@ public class EventoRequest {
 
     private String nome;
     private String descricao;
+    private String local;
 
     @DateTimeFormat(iso = ISO.DATE)
     private LocalDate dataInicio;
@@ -32,6 +33,14 @@ public class EventoRequest {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getLocal() {
+        return local;
+    }
+
+    public void setLocal(String local) {
+        this.local = local;
     }
 
     public LocalDate getDataInicio() {

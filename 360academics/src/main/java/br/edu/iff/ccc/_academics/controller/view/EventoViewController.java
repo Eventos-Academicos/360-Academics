@@ -1,5 +1,7 @@
 package br.edu.iff.ccc._academics.controller.view;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +45,7 @@ public class EventoViewController {
     }
 
     @GetMapping("/{id}")
-    public String detalhe(@PathVariable Long id, Model model) {
+    public String detalhe(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Detalhes do Evento");
         model.addAttribute("id", id);
         model.addAttribute("evento", service.buscarPorId(id));
@@ -51,7 +53,7 @@ public class EventoViewController {
     }
 
     @GetMapping("/{id}/editar")
-    public String editar(@PathVariable Long id, Model model) {
+    public String editar(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Editar Evento");
         model.addAttribute("id", id);
         model.addAttribute("evento", service.buscarPorId(id));
@@ -59,14 +61,14 @@ public class EventoViewController {
     }
 
     @PostMapping("/{id}")
-    public String atualizar(@PathVariable Long id, EventoRequest request, HttpSession session) {
+    public String atualizar(@PathVariable UUID id, EventoRequest request, HttpSession session) {
         exigirOrganizadorLogado(session);
         service.atualizar(id, request);
         return "redirect:/eventos/" + id;
     }
 
     @PostMapping("/{id}/excluir")
-    public String excluir(@PathVariable Long id) {
+    public String excluir(@PathVariable UUID id) {
         service.remover(id);
         return "redirect:/eventos";
     }

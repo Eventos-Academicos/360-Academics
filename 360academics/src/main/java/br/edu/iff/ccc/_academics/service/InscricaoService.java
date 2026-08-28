@@ -2,6 +2,7 @@ package br.edu.iff.ccc._academics.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
@@ -26,21 +27,22 @@ public class InscricaoService {
     }
 
     public List<Inscricao> listarTodos() {
-        return repositorio.listarTodos();
+        return repositorio.findAll();
     }
 
-    public List<Inscricao> listarPorEvento(Long eventoId) {
-        return repositorio.listarPorEvento(eventoId);
+    public List<Inscricao> listarPorEvento(UUID eventoId) {
+        return repositorio.findByEventoId(eventoId);
     }
 
-    public Inscricao buscarPorId(Long id) {
-        return repositorio.buscarPorId(id);
+    public Inscricao buscarPorId(UUID id) {
+        return repositorio.findById(id)
+                .orElseThrow(() -> new RegraNegocioException("Inscrição não encontrada."));
     }
 
-    public Inscricao criar(Long eventoId, InscricaoRequest request) {
+    public Inscricao criar(UUID eventoId, InscricaoRequest request) {
         Evento evento = eventoService.buscarPorId(eventoId);
 
-        long vagasOcupadas = repositorio.listarPorEvento(eventoId).stream()
+        long vagasOcupadas = repositorio.findByEventoId(eventoId).stream()
                 .filter(i -> !"Cancelada".equals(i.getStatus()))
                 .count();
         if (vagasOcupadas >= evento.getLimiteVagas()) {
@@ -52,22 +54,17 @@ public class InscricaoService {
         inscricao.setParticipante(participanteService.buscarPorId(request.getParticipanteId()));
         inscricao.setDataInscricao(LocalDate.now());
         inscricao.setStatus("Confirmada");
-        return repositorio.salvar(inscricao);
+        return repositorio.save(inscricao);
     }
 
-    public Inscricao atualizarStatus(Long id, String status) {
-        Inscricao inscricao = repositorio.buscarPorId(id);
-        if (inscricao != null) {
-            inscricao.setStatus(status);
-        }
-        return inscricao;
+    public Inscricao atualizarStatus(UUID id, String status) {
+        Inscricao inscricao = buscarPorId(id);
+        inscricao.setStatus(status);
+        return repositorio.save(inscricao);
     }
 
-    public void remover(Long id) {
-        Inscricao inscricao = repositorio.buscarPorId(id);
-        if (inscricao != null) {
-            repositorio.remover(inscricao);
-        }
+    public void remover(UUID id) {
+        repositorio.deleteById(id);
     }
 
 }

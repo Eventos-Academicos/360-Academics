@@ -18,6 +18,10 @@
             <textarea id="descricao" name="descricao" rows="3"
                       th:text="${evento != null ? evento.descricao : ''}"></textarea>
 
+            <label for="local">Local</label>
+            <input type="text" id="local" name="local"
+                   th:value="${evento != null ? evento.local : ''}">
+
             <label for="dataInicio">Data de início</label>
             <input type="date" id="dataInicio" name="dataInicio" required
                    th:value="${evento != null ? evento.dataInicio : ''}">

@@ -1,17 +1,40 @@
 package br.edu.iff.ccc._academics.entities;
 
+import java.util.UUID;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_presenca")
 public class Presenca {
 
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(name = "st_confirmada", nullable = false)
     private boolean confirmada;
+
+    @ManyToOne
+    @JoinColumn(name = "id_inscricao", nullable = false)
     private Inscricao inscricao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_atividade", nullable = false)
     private Atividade atividade;
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

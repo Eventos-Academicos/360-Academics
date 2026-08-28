@@ -1,6 +1,7 @@
 package br.edu.iff.ccc._academics.dto;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,7 +16,7 @@ public class AtividadeRequest {
     private LocalDateTime horarioFim;
 
     private String local;
-    private Long palestranteId;
+    private UUID palestranteId;
 
     public String getTitulo() {
         return titulo;
@@ -49,11 +50,11 @@ public class AtividadeRequest {
         this.local = local;
     }
 
-    public Long getPalestranteId() {
+    public UUID getPalestranteId() {
         return palestranteId;
     }
 
-    public void setPalestranteId(Long palestranteId) {
+    public void setPalestranteId(UUID palestranteId) {
         this.palestranteId = palestranteId;
     }
 

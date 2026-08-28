@@ -1,31 +1,32 @@
 package br.edu.iff.ccc._academics.dto;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 public class HistoricoRequest {
 
-    private Long participanteId;
-    private Long eventoId;
+    private UUID participanteId;
+    private UUID eventoId;
 
     @DateTimeFormat(iso = ISO.DATE)
     private LocalDate dataConclusao;
 
-    public Long getParticipanteId() {
+    public UUID getParticipanteId() {
         return participanteId;
     }
 
-    public void setParticipanteId(Long participanteId) {
+    public void setParticipanteId(UUID participanteId) {
         this.participanteId = participanteId;
     }
 
-    public Long getEventoId() {
+    public UUID getEventoId() {
         return eventoId;
     }
 
-    public void setEventoId(Long eventoId) {
+    public void setEventoId(UUID eventoId) {
         this.eventoId = eventoId;
     }
 

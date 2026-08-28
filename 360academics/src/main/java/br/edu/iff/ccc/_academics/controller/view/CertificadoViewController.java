@@ -1,5 +1,7 @@
 package br.edu.iff.ccc._academics.controller.view;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +33,7 @@ public class CertificadoViewController {
     }
 
     @GetMapping("/{id}")
-    public String detalhe(@PathVariable Long id, Model model) {
+    public String detalhe(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Certificado");
         model.addAttribute("id", id);
         model.addAttribute("certificado", service.buscarPorId(id));
@@ -39,14 +41,14 @@ public class CertificadoViewController {
     }
 
     @PostMapping("/gerar/{inscricaoId}/{atividadeId}")
-    public String gerar(@PathVariable Long inscricaoId, @PathVariable Long atividadeId, HttpSession session) {
+    public String gerar(@PathVariable UUID inscricaoId, @PathVariable UUID atividadeId, HttpSession session) {
         Palestrante palestrante = exigirPalestranteLogado(session);
         service.gerar(inscricaoId, atividadeId, palestrante.getId());
         return "redirect:/certificados";
     }
 
     @GetMapping("/{id}/editar")
-    public String editar(@PathVariable Long id, Model model) {
+    public String editar(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Editar Certificado");
         model.addAttribute("id", id);
         model.addAttribute("certificado", service.buscarPorId(id));
@@ -54,13 +56,13 @@ public class CertificadoViewController {
     }
 
     @PostMapping("/{id}")
-    public String atualizar(@PathVariable Long id, CertificadoRequest request) {
+    public String atualizar(@PathVariable UUID id, CertificadoRequest request) {
         service.atualizar(id, request);
         return "redirect:/certificados/" + id;
     }
 
     @PostMapping("/{id}/excluir")
-    public String excluir(@PathVariable Long id) {
+    public String excluir(@PathVariable UUID id) {
         service.remover(id);
         return "redirect:/certificados";
     }
