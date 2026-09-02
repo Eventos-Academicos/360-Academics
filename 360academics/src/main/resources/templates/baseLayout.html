@@ -8,6 +8,9 @@
 </head>
 <body>
 	<header th:replace="~{fragments/header :: header}"></header>
+	<div class="container" th:if="${erro}">
+		<p class="alert-erro" th:text="${erro}">Mensagem de erro</p>
+	</div>
 	<main class="page-content container" th:insert="${content}"></main>
 	<footer th:replace="~{fragments/footer :: footer}"></footer>
 </body>

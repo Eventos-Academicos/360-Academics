@@ -2,17 +2,31 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
 <th:block th:fragment="content">
+    <p><a class="back-link" th:href="@{/certificados}">&larr; Voltar aos certificados</a></p>
+
     <section class="hero">
         <h1 th:text="${titulo}">Certificado</h1>
         <p>Detalhes e validação do certificado digital.</p>
     </section>
 
+    <section class="section-card">
+        <p><strong>Atividade:</strong> <span th:text="${certificado.atividade.titulo}">Atividade</span></p>
+        <p><strong>Participante:</strong> <span th:text="${certificado.inscricao.participante.nome}">Nome</span></p>
+        <p><strong>Emitido em:</strong> <span th:text="${certificado.dataEmissao}">01/01/2026</span></p>
+        <p><strong>Código de validação:</strong> <span th:text="${certificado.codigoValidacao}">ABC123</span></p>
+    </section>
+
     <section class="section-card callout">
         <div>
-            <h2>Download</h2>
-            <p>Baixe o certificado em formato digital.</p>
+            <h2>Gerenciar</h2>
+            <p>Editar ou remover este certificado.</p>
         </div>
-        <a class="btn" th:href="@{/certificados/{id}(id=${id})}">Baixar certificado</a>
+        <div>
+            <a class="btn-secondary" th:href="@{/certificados/{id}/editar(id=${id})}">Editar</a>
+            <form method="post" th:action="@{/certificados/{id}/excluir(id=${id})}" style="display:inline">
+                <button type="submit" class="btn-danger">Excluir</button>
+            </form>
+        </div>
     </section>
 </th:block>
 </html>

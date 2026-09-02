@@ -2,6 +2,8 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
 <th:block th:fragment="content">
+    <p><a class="back-link" th:href="@{/eventos/{eventoId}/atividades/{atividadeId}(eventoId=${eventoId},atividadeId=${atividadeId})}">&larr; Voltar à atividade</a></p>
+
     <section class="hero">
         <h1 th:text="${titulo}">Controle de Presença</h1>
         <p>Confirme a presença dos participantes inscritos nesta atividade.</p>
@@ -18,13 +20,23 @@
             </thead>
             <tbody>
                 <tr th:each="presenca : ${presencas}">
-                    <td th:text="${presenca.participante}">Nome do participante</td>
+                    <td th:text="${presenca.inscricao.participante.nome}">Nome do participante</td>
                     <td th:text="${presenca.confirmada}">Não</td>
                     <td>
                         <form method="post"
-                              th:action="@{/eventos/{eventoId}/atividades/{atividadeId}/presencas/{inscricaoId}/confirmar(eventoId=${eventoId},atividadeId=${atividadeId},inscricaoId=${presenca.inscricaoId})}"
+                              th:action="@{/eventos/{eventoId}/atividades/{atividadeId}/presencas/{inscricaoId}/confirmar(eventoId=${eventoId},atividadeId=${atividadeId},inscricaoId=${presenca.inscricao.id})}"
                               style="display:inline">
                             <button type="submit">Confirmar presença</button>
+                        </form>
+                        <form method="post"
+                              th:action="@{/eventos/{eventoId}/atividades/{atividadeId}/presencas/{inscricaoId}/desconfirmar(eventoId=${eventoId},atividadeId=${atividadeId},inscricaoId=${presenca.inscricao.id})}"
+                              style="display:inline">
+                            <button type="submit" class="btn-secondary">Remover presença</button>
+                        </form>
+                        <form th:if="${presenca.confirmada}" method="post"
+                              th:action="@{/certificados/gerar/{inscricaoId}/{atividadeId}(inscricaoId=${presenca.inscricao.id},atividadeId=${atividadeId})}"
+                              style="display:inline">
+                            <button type="submit">Gerar certificado</button>
                         </form>
                     </td>
                 </tr>

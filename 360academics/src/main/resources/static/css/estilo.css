@@ -38,6 +38,15 @@ main.page-content {
     border-radius: 10px;
 }
 
+.alert-erro {
+    margin: 1.5rem auto 0;
+    padding: 0.75rem 1rem;
+    background: #fdecea;
+    color: #611a15;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+}
+
 .site-header,
 .site-footer {
     background: var(--surface);
@@ -160,7 +169,8 @@ textarea:focus {
 }
 
 button,
-.btn {
+.btn,
+.btn-secondary {
     display: inline-block;
     padding: 0.65rem 1rem;
     border: 0;
@@ -177,6 +187,37 @@ button:hover,
     background: var(--primary-hover);
 }
 
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+}
+
+.btn-secondary:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+.btn-danger {
+    background: #b91c1c;
+}
+
+.btn-danger:hover {
+    background: #991b1b;
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    color: var(--primary);
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -189,6 +230,16 @@ td {
     padding: 0.75rem;
     border: 1px solid var(--border);
     text-align: left;
+}
+
+td form {
+    display: inline-block;
+}
+
+td a.btn,
+td a.btn-secondary,
+td form {
+    margin-right: 0.4rem;
 }
 
 th {

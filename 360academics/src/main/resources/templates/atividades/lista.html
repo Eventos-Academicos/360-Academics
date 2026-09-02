@@ -2,6 +2,8 @@
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
       th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
 <th:block th:fragment="content">
+    <p><a class="back-link" th:href="@{/eventos/{eventoId}(eventoId=${eventoId})}">&larr; Voltar ao evento</a></p>
+
     <section class="hero">
         <h1 th:text="${titulo}">Atividades do Evento</h1>
         <p>Palestras, workshops e minicursos deste evento.</p>
@@ -24,7 +26,7 @@
                     <td th:text="${atividade.horarioInicio}">09:00</td>
                     <td th:text="${atividade.horarioFim}">10:00</td>
                     <td th:text="${atividade.local}">Auditório</td>
-                    <td><a th:href="@{/eventos/{eventoId}/atividades/{id}(eventoId=${eventoId},id=${atividade.id})}">Ver</a></td>
+                    <td><a class="btn-secondary" th:href="@{/eventos/{eventoId}/atividades/{id}(eventoId=${eventoId},id=${atividade.id})}">Ver</a></td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(atividades)}">
                     <td colspan="5">Nenhuma atividade cadastrada ainda.</td>

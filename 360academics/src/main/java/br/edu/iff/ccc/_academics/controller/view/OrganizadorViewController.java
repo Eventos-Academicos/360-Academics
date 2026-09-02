@@ -1,6 +1,6 @@
 package br.edu.iff.ccc._academics.controller.view;
 
-import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,16 +8,24 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
+import br.edu.iff.ccc._academics.dto.OrganizadorRequest;
+import br.edu.iff.ccc._academics.service.OrganizadorService;
 
 @Controller
 @RequestMapping("/organizadores")
 public class OrganizadorViewController {
 
+    private final OrganizadorService service;
+
+    public OrganizadorViewController(OrganizadorService service) {
+        this.service = service;
+    }
+
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("titulo", "Organizadores");
-        model.addAttribute("organizadores", List.of());
+        model.addAttribute("organizadores", service.listarTodos());
         return "organizadores/lista";
     }
 
@@ -28,24 +36,28 @@ public class OrganizadorViewController {
     }
 
     @PostMapping
-    public String criar(@RequestParam String nome, @RequestParam String email) {
+    public String criar(OrganizadorRequest request) {
+        service.criar(request);
         return "redirect:/organizadores";
     }
 
     @GetMapping("/{id}/editar")
-    public String editar(@PathVariable Long id, Model model) {
+    public String editar(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Editar Organizador");
         model.addAttribute("id", id);
+        model.addAttribute("organizador", service.buscarPorId(id));
         return "organizadores/form";
     }
 
     @PostMapping("/{id}")
-    public String atualizar(@PathVariable Long id, @RequestParam String nome, @RequestParam String email) {
+    public String atualizar(@PathVariable UUID id, OrganizadorRequest request) {
+        service.atualizar(id, request);
         return "redirect:/organizadores";
     }
 
     @PostMapping("/{id}/excluir")
-    public String excluir(@PathVariable Long id) {
+    public String excluir(@PathVariable UUID id) {
+        service.remover(id);
         return "redirect:/organizadores";
     }
 

@@ -1,6 +1,6 @@
 package br.edu.iff.ccc._academics.controller.view;
 
-import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,27 +9,70 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.edu.iff.ccc._academics.dto.CertificadoRequest;
+import br.edu.iff.ccc._academics.entities.Palestrante;
+import br.edu.iff.ccc._academics.exception.RegraNegocioException;
+import br.edu.iff.ccc._academics.service.CertificadoService;
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/certificados")
 public class CertificadoViewController {
 
+    private final CertificadoService service;
+
+    public CertificadoViewController(CertificadoService service) {
+        this.service = service;
+    }
+
     @GetMapping
     public String listar(Model model) {
         model.addAttribute("titulo", "Meus Certificados");
-        model.addAttribute("certificados", List.of());
+        model.addAttribute("certificados", service.listarTodos());
         return "certificados/lista";
     }
 
     @GetMapping("/{id}")
-    public String detalhe(@PathVariable Long id, Model model) {
+    public String detalhe(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Certificado");
         model.addAttribute("id", id);
+        model.addAttribute("certificado", service.buscarPorId(id));
         return "certificados/detalhe";
     }
 
-    @PostMapping("/gerar/{inscricaoId}")
-    public String gerar(@PathVariable Long inscricaoId) {
+    @PostMapping("/gerar/{inscricaoId}/{atividadeId}")
+    public String gerar(@PathVariable UUID inscricaoId, @PathVariable UUID atividadeId, HttpSession session) {
+        Palestrante palestrante = exigirPalestranteLogado(session);
+        service.gerar(inscricaoId, atividadeId, palestrante.getId());
         return "redirect:/certificados";
+    }
+
+    @GetMapping("/{id}/editar")
+    public String editar(@PathVariable UUID id, Model model) {
+        model.addAttribute("titulo", "Editar Certificado");
+        model.addAttribute("id", id);
+        model.addAttribute("certificado", service.buscarPorId(id));
+        return "certificados/form";
+    }
+
+    @PostMapping("/{id}")
+    public String atualizar(@PathVariable UUID id, CertificadoRequest request) {
+        service.atualizar(id, request);
+        return "redirect:/certificados/" + id;
+    }
+
+    @PostMapping("/{id}/excluir")
+    public String excluir(@PathVariable UUID id) {
+        service.remover(id);
+        return "redirect:/certificados";
+    }
+
+    private Palestrante exigirPalestranteLogado(HttpSession session) {
+        Object usuario = session.getAttribute("usuarioLogado");
+        if (!(usuario instanceof Palestrante palestrante)) {
+            throw new RegraNegocioException("Você precisa entrar como palestrante para emitir certificados.");
+        }
+        return palestrante;
     }
 
 }

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Editar Certificado</h1>
+        <p>Ajuste o código de validação do certificado.</p>
+    </section>
+
+    <section class="section-card">
+        <form method="post" th:action="@{/certificados/{id}(id=${id})}">
+            <label for="codigoValidacao">Código de validação</label>
+            <input type="text" id="codigoValidacao" name="codigoValidacao" required
+                   th:value="${certificado != null ? certificado.codigoValidacao : ''}">
+
+            <button type="submit">Salvar</button>
+        </form>
+    </section>
+</th:block>
+</html>

@@ -4,13 +4,8 @@ public class ParticipanteRequest {
 
     private String nome;
     private String email;
+    private String senha;
     private String matricula;
-
-    public ParticipanteRequest(String nome, String email, String matricula) {
-        this.nome = nome;
-        this.email = email;
-        this.matricula = matricula;
-    }
 
     public ParticipanteRequest() {
     }
@@ -29,6 +24,14 @@ public class ParticipanteRequest {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public String getMatricula() {
