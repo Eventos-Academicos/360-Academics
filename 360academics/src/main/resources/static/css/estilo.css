@@ -264,3 +264,30 @@ th {
         align-items: flex-start;
     }
 }
+.erro-campo {
+	display: block;
+	margin: -0.4rem 0 0.6rem;
+	color: #b3261e;
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+input.is-invalid,
+textarea.is-invalid,
+select.is-invalid {
+	border-color: #b3261e;
+}
+
+.erro-campo {
+    display: block;
+    margin: -0.4rem 0 0.6rem;
+    color: #b3261e;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+input.is-invalid,
+textarea.is-invalid,
+select.is-invalid {
+    border-color: #b3261e;
+}

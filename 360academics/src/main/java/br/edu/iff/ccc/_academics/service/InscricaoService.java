@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import br.edu.iff.ccc._academics.dto.InscricaoRequest;
 import br.edu.iff.ccc._academics.entities.Evento;
 import br.edu.iff.ccc._academics.entities.Inscricao;
+import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.exception.RegraNegocioException;
 import br.edu.iff.ccc._academics.repository.InscricaoRepositorio;
 
@@ -36,7 +37,7 @@ public class InscricaoService {
 
     public Inscricao buscarPorId(UUID id) {
         return repositorio.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Inscrição não encontrada."));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Inscrição não encontrada."));
     }
 
     public Inscricao criar(UUID eventoId, InscricaoRequest request) {

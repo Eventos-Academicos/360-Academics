@@ -8,34 +8,34 @@
     </section>
 
     <section class="section-card">
-        <form method="post"
+        <form method="post" th:object="${atividadeRequest}"
               th:action="${atividadeId} != null ? @{/eventos/{eventoId}/atividades/{id}(eventoId=${eventoId},id=${atividadeId})} : @{/eventos/{eventoId}/atividades(eventoId=${eventoId})}">
             <label for="titulo">Título</label>
-            <input type="text" id="titulo" name="titulo" required
-                   th:value="${atividade != null ? atividade.titulo : ''}">
+            <input type="text" id="titulo" th:field="*{titulo}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}">Título inválido</span>
 
             <label for="horarioInicio">Início</label>
-            <input type="datetime-local" id="horarioInicio" name="horarioInicio" required
-                   th:value="${atividade != null ? atividade.horarioInicio : ''}">
+            <input type="datetime-local" id="horarioInicio" th:field="*{horarioInicio}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('horarioInicio')}" th:errors="*{horarioInicio}">Horário inválido</span>
 
             <label for="horarioFim">Fim</label>
-            <input type="datetime-local" id="horarioFim" name="horarioFim" required
-                   th:value="${atividade != null ? atividade.horarioFim : ''}">
+            <input type="datetime-local" id="horarioFim" th:field="*{horarioFim}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('horarioFim')}" th:errors="*{horarioFim}">Horário inválido</span>
 
             <label for="local">Local</label>
-            <input type="text" id="local" name="local" required
-                   th:value="${atividade != null ? atividade.local : ''}">
+            <input type="text" id="local" th:field="*{local}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('local')}" th:errors="*{local}">Local inválido</span>
 
             <label for="palestranteId">Palestrante</label>
-            <select id="palestranteId" name="palestranteId" required>
+            <select id="palestranteId" th:field="*{palestranteId}" th:errorclass="is-invalid">
                 <option value="">Selecione um palestrante</option>
                 <option th:each="palestrante : ${palestrantes}"
                         th:value="${palestrante.id}"
-                        th:text="${palestrante.nome}"
-                        th:selected="${atividade != null and atividade.palestrante.id == palestrante.id}">
+                        th:text="${palestrante.nome}">
                     Nome do palestrante
                 </option>
             </select>
+            <span class="erro-campo" th:if="${#fields.hasErrors('palestranteId')}" th:errors="*{palestranteId}">Palestrante inválido</span>
 
             <button type="submit">Salvar</button>
         </form>

@@ -8,31 +8,31 @@
     </section>
 
     <section class="section-card">
-        <form method="post"
+        <form method="post" th:object="${eventoRequest}"
               th:action="${id} != null ? @{/eventos/{id}(id=${id})} : @{/eventos}">
             <label for="nome">Nome</label>
-            <input type="text" id="nome" name="nome" required
-                   th:value="${evento != null ? evento.nome : ''}">
+            <input type="text" id="nome" th:field="*{nome}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">Nome inválido</span>
 
             <label for="descricao">Descrição</label>
-            <textarea id="descricao" name="descricao" rows="3"
-                      th:text="${evento != null ? evento.descricao : ''}"></textarea>
+            <textarea id="descricao" rows="3" th:field="*{descricao}" th:errorclass="is-invalid"></textarea>
+            <span class="erro-campo" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}">Descrição inválida</span>
 
             <label for="local">Local</label>
-            <input type="text" id="local" name="local"
-                   th:value="${evento != null ? evento.local : ''}">
+            <input type="text" id="local" th:field="*{local}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('local')}" th:errors="*{local}">Local inválido</span>
 
             <label for="dataInicio">Data de início</label>
-            <input type="date" id="dataInicio" name="dataInicio" required
-                   th:value="${evento != null ? evento.dataInicio : ''}">
+            <input type="date" id="dataInicio" th:field="*{dataInicio}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('dataInicio')}" th:errors="*{dataInicio}">Data inválida</span>
 
             <label for="dataFim">Data de fim</label>
-            <input type="date" id="dataFim" name="dataFim" required
-                   th:value="${evento != null ? evento.dataFim : ''}">
+            <input type="date" id="dataFim" th:field="*{dataFim}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('dataFim')}" th:errors="*{dataFim}">Data inválida</span>
 
             <label for="limiteVagas">Limite de vagas</label>
-            <input type="number" id="limiteVagas" name="limiteVagas" min="1" required
-                   th:value="${evento != null ? evento.limiteVagas : ''}">
+            <input type="number" id="limiteVagas" min="1" th:field="*{limiteVagas}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('limiteVagas')}" th:errors="*{limiteVagas}">Limite inválido</span>
 
             <button type="submit">Salvar</button>
         </form>

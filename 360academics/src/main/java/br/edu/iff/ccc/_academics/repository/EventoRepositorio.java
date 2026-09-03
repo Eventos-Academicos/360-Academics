@@ -9,4 +9,9 @@ import br.edu.iff.ccc._academics.entities.Evento;
 
 @Repository
 public interface EventoRepositorio extends JpaRepository<Evento, UUID> {
+
+    boolean existsByNome(String nome);
+
+    boolean existsByNomeAndIdNot(String nome, UUID id);
+
 }

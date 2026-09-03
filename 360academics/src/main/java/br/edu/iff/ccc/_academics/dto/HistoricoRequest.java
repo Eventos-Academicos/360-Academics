@@ -6,11 +6,17 @@ import java.util.UUID;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import jakarta.validation.constraints.NotNull;
+
 public class HistoricoRequest {
 
+    @NotNull(message = "Selecione o participante.")
     private UUID participanteId;
+
+    @NotNull(message = "Selecione o evento.")
     private UUID eventoId;
 
+    @NotNull(message = "A data de conclusão é obrigatória.")
     @DateTimeFormat(iso = ISO.DATE)
     private LocalDate dataConclusao;
 

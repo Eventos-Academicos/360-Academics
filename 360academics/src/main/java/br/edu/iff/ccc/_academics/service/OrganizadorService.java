@@ -7,16 +7,20 @@ import org.springframework.stereotype.Service;
 
 import br.edu.iff.ccc._academics.dto.OrganizadorRequest;
 import br.edu.iff.ccc._academics.entities.Organizador;
-import br.edu.iff.ccc._academics.exception.RegraNegocioException;
+import br.edu.iff.ccc._academics.exception.EntidadeDuplicadaException;
+import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.repository.OrganizadorRepositorio;
+import br.edu.iff.ccc._academics.repository.UsuarioRepositorio;
 
 @Service
 public class OrganizadorService {
 
     private final OrganizadorRepositorio repositorio;
+    private final UsuarioRepositorio usuarioRepositorio;
 
-    public OrganizadorService(OrganizadorRepositorio repositorio) {
+    public OrganizadorService(OrganizadorRepositorio repositorio, UsuarioRepositorio usuarioRepositorio) {
         this.repositorio = repositorio;
+        this.usuarioRepositorio = usuarioRepositorio;
     }
 
     public List<Organizador> listarTodos() {
@@ -25,10 +29,14 @@ public class OrganizadorService {
 
     public Organizador buscarPorId(UUID id) {
         return repositorio.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Organizador não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Organizador não encontrado."));
     }
 
     public Organizador criar(OrganizadorRequest request) {
+        if (usuarioRepositorio.existsByEmail(request.getEmail())) {
+            throw new EntidadeDuplicadaException("Já existe um usuário cadastrado com o e-mail "
+                    + request.getEmail() + ".");
+        }
         Organizador organizador = new Organizador();
         organizador.setNome(request.getNome());
         organizador.setEmail(request.getEmail());
@@ -38,6 +46,10 @@ public class OrganizadorService {
 
     public Organizador atualizar(UUID id, OrganizadorRequest request) {
         Organizador organizador = buscarPorId(id);
+        if (usuarioRepositorio.existsByEmailAndIdNot(request.getEmail(), id)) {
+            throw new EntidadeDuplicadaException("Já existe outro usuário cadastrado com o e-mail "
+                    + request.getEmail() + ".");
+        }
         organizador.setNome(request.getNome());
         organizador.setEmail(request.getEmail());
         if (request.getSenha() != null && !request.getSenha().isBlank()) {

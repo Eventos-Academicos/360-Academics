@@ -7,7 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.edu.iff.ccc._academics.dto.EventoRequest;
 import br.edu.iff.ccc._academics.entities.Evento;
-import br.edu.iff.ccc._academics.exception.RegraNegocioException;
+import br.edu.iff.ccc._academics.exception.EntidadeDuplicadaException;
+import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.repository.EventoRepositorio;
 
 @Service
@@ -25,10 +26,14 @@ public class EventoService {
 
     public Evento buscarPorId(UUID id) {
         return repositorio.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Evento não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Evento não encontrado."));
     }
 
     public Evento criar(EventoRequest request) {
+        if (repositorio.existsByNome(request.getNome())) {
+            throw new EntidadeDuplicadaException("Já existe um evento cadastrado com o nome \""
+                    + request.getNome() + "\".");
+        }
         Evento evento = new Evento();
         preencher(evento, request);
         return repositorio.save(evento);
@@ -36,6 +41,10 @@ public class EventoService {
 
     public Evento atualizar(UUID id, EventoRequest request) {
         Evento evento = buscarPorId(id);
+        if (repositorio.existsByNomeAndIdNot(request.getNome(), id)) {
+            throw new EntidadeDuplicadaException("Já existe outro evento cadastrado com o nome \""
+                    + request.getNome() + "\".");
+        }
         preencher(evento, request);
         return repositorio.save(evento);
     }

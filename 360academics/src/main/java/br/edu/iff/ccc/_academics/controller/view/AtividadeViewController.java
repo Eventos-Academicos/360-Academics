@@ -4,14 +4,17 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.iff.ccc._academics.dto.AtividadeRequest;
+import br.edu.iff.ccc._academics.entities.Atividade;
 import br.edu.iff.ccc._academics.service.AtividadeService;
 import br.edu.iff.ccc._academics.service.PalestranteService;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/eventos/{eventoId}/atividades")
@@ -36,14 +39,20 @@ public class AtividadeViewController {
     @GetMapping("/nova")
     public String nova(@PathVariable UUID eventoId, Model model) {
         model.addAttribute("titulo", "Nova Atividade");
-        model.addAttribute("eventoId", eventoId);
-        model.addAttribute("palestrantes", palestranteService.listarTodos());
+        model.addAttribute("atividadeRequest", new AtividadeRequest());
+        prepararFormulario(model, eventoId, null);
         return "atividades/form";
     }
 
     @PostMapping
-    public String criar(@PathVariable UUID eventoId, AtividadeRequest request) {
-        service.criar(eventoId, request);
+    public String criar(@PathVariable UUID eventoId, @Valid AtividadeRequest atividadeRequest,
+            BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Nova Atividade");
+            prepararFormulario(model, eventoId, null);
+            return "atividades/form";
+        }
+        service.criar(eventoId, atividadeRequest);
         return "redirect:/eventos/" + eventoId + "/atividades";
     }
 
@@ -59,16 +68,20 @@ public class AtividadeViewController {
     @GetMapping("/{atividadeId}/editar")
     public String editar(@PathVariable UUID eventoId, @PathVariable UUID atividadeId, Model model) {
         model.addAttribute("titulo", "Editar Atividade");
-        model.addAttribute("eventoId", eventoId);
-        model.addAttribute("atividadeId", atividadeId);
-        model.addAttribute("atividade", service.buscarPorId(atividadeId));
-        model.addAttribute("palestrantes", palestranteService.listarTodos());
+        model.addAttribute("atividadeRequest", paraRequest(service.buscarPorId(atividadeId)));
+        prepararFormulario(model, eventoId, atividadeId);
         return "atividades/form";
     }
 
     @PostMapping("/{atividadeId}")
-    public String atualizar(@PathVariable UUID eventoId, @PathVariable UUID atividadeId, AtividadeRequest request) {
-        service.atualizar(atividadeId, request);
+    public String atualizar(@PathVariable UUID eventoId, @PathVariable UUID atividadeId,
+            @Valid AtividadeRequest atividadeRequest, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Editar Atividade");
+            prepararFormulario(model, eventoId, atividadeId);
+            return "atividades/form";
+        }
+        service.atualizar(atividadeId, atividadeRequest);
         return "redirect:/eventos/" + eventoId + "/atividades/" + atividadeId;
     }
 
@@ -76,6 +89,24 @@ public class AtividadeViewController {
     public String excluir(@PathVariable UUID eventoId, @PathVariable UUID atividadeId) {
         service.remover(atividadeId);
         return "redirect:/eventos/" + eventoId + "/atividades";
+    }
+
+    private void prepararFormulario(Model model, UUID eventoId, UUID atividadeId) {
+        model.addAttribute("eventoId", eventoId);
+        model.addAttribute("atividadeId", atividadeId);
+        model.addAttribute("palestrantes", palestranteService.listarTodos());
+    }
+
+    private AtividadeRequest paraRequest(Atividade atividade) {
+        AtividadeRequest request = new AtividadeRequest();
+        request.setTitulo(atividade.getTitulo());
+        request.setHorarioInicio(atividade.getHorarioInicio());
+        request.setHorarioFim(atividade.getHorarioFim());
+        request.setLocal(atividade.getLocal());
+        if (atividade.getPalestrante() != null) {
+            request.setPalestranteId(atividade.getPalestrante().getId());
+        }
+        return request;
     }
 
 }

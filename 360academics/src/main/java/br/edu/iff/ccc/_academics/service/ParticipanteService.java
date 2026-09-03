@@ -7,16 +7,20 @@ import org.springframework.stereotype.Service;
 
 import br.edu.iff.ccc._academics.dto.ParticipanteRequest;
 import br.edu.iff.ccc._academics.entities.Participante;
-import br.edu.iff.ccc._academics.exception.RegraNegocioException;
+import br.edu.iff.ccc._academics.exception.EntidadeDuplicadaException;
+import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.repository.ParticipanteRepositorio;
+import br.edu.iff.ccc._academics.repository.UsuarioRepositorio;
 
 @Service
 public class ParticipanteService {
 
     private final ParticipanteRepositorio repositorio;
+    private final UsuarioRepositorio usuarioRepositorio;
 
-    public ParticipanteService(ParticipanteRepositorio repositorio) {
+    public ParticipanteService(ParticipanteRepositorio repositorio, UsuarioRepositorio usuarioRepositorio) {
         this.repositorio = repositorio;
+        this.usuarioRepositorio = usuarioRepositorio;
     }
 
     public List<Participante> listarTodos() {
@@ -25,10 +29,14 @@ public class ParticipanteService {
 
     public Participante buscarPorId(UUID id) {
         return repositorio.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Participante não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Participante não encontrado."));
     }
 
     public Participante criar(ParticipanteRequest request) {
+        if (usuarioRepositorio.existsByEmail(request.getEmail())) {
+            throw new EntidadeDuplicadaException("Já existe um usuário cadastrado com o e-mail "
+                    + request.getEmail() + ".");
+        }
         Participante participante = new Participante();
         participante.setNome(request.getNome());
         participante.setEmail(request.getEmail());
@@ -39,6 +47,10 @@ public class ParticipanteService {
 
     public Participante atualizar(UUID id, ParticipanteRequest request) {
         Participante participante = buscarPorId(id);
+        if (usuarioRepositorio.existsByEmailAndIdNot(request.getEmail(), id)) {
+            throw new EntidadeDuplicadaException("Já existe outro usuário cadastrado com o e-mail "
+                    + request.getEmail() + ".");
+        }
         participante.setNome(request.getNome());
         participante.setEmail(request.getEmail());
         participante.setMatricula(request.getMatricula());
