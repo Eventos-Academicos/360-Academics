@@ -4,15 +4,18 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.iff.ccc._academics.dto.EventoRequest;
+import br.edu.iff.ccc._academics.entities.Evento;
 import br.edu.iff.ccc._academics.exception.RegraNegocioException;
 import br.edu.iff.ccc._academics.service.EventoService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/eventos")
@@ -34,13 +37,18 @@ public class EventoViewController {
     @GetMapping("/novo")
     public String novo(Model model) {
         model.addAttribute("titulo", "Novo Evento");
+        model.addAttribute("eventoRequest", new EventoRequest());
         return "eventos/form";
     }
 
     @PostMapping
-    public String criar(EventoRequest request, HttpSession session) {
+    public String criar(@Valid EventoRequest eventoRequest, BindingResult result, Model model, HttpSession session) {
         exigirOrganizadorLogado(session);
-        service.criar(request);
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Novo Evento");
+            return "eventos/form";
+        }
+        service.criar(eventoRequest);
         return "redirect:/eventos";
     }
 
@@ -56,21 +64,39 @@ public class EventoViewController {
     public String editar(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Editar Evento");
         model.addAttribute("id", id);
-        model.addAttribute("evento", service.buscarPorId(id));
+        model.addAttribute("eventoRequest", paraRequest(service.buscarPorId(id)));
         return "eventos/form";
     }
 
     @PostMapping("/{id}")
-    public String atualizar(@PathVariable UUID id, EventoRequest request, HttpSession session) {
+    public String atualizar(@PathVariable UUID id, @Valid EventoRequest eventoRequest, BindingResult result,
+            Model model, HttpSession session) {
         exigirOrganizadorLogado(session);
-        service.atualizar(id, request);
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Editar Evento");
+            model.addAttribute("id", id);
+            return "eventos/form";
+        }
+        service.atualizar(id, eventoRequest);
         return "redirect:/eventos/" + id;
     }
 
     @PostMapping("/{id}/excluir")
-    public String excluir(@PathVariable UUID id) {
+    public String excluir(@PathVariable UUID id, HttpSession session) {
+        exigirOrganizadorLogado(session);
         service.remover(id);
         return "redirect:/eventos";
+    }
+
+    private EventoRequest paraRequest(Evento evento) {
+        EventoRequest request = new EventoRequest();
+        request.setNome(evento.getNome());
+        request.setDescricao(evento.getDescricao());
+        request.setLocal(evento.getLocal());
+        request.setDataInicio(evento.getDataInicio());
+        request.setDataFim(evento.getDataFim());
+        request.setLimiteVagas(evento.getLimiteVagas());
+        return request;
     }
 
     private void exigirOrganizadorLogado(HttpSession session) {

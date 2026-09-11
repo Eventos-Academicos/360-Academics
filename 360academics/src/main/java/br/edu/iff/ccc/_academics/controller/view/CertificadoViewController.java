@@ -4,16 +4,19 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import br.edu.iff.ccc._academics.dto.CertificadoRequest;
+import br.edu.iff.ccc._academics.entities.Certificado;
 import br.edu.iff.ccc._academics.entities.Palestrante;
 import br.edu.iff.ccc._academics.exception.RegraNegocioException;
 import br.edu.iff.ccc._academics.service.CertificadoService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/certificados")
@@ -51,13 +54,19 @@ public class CertificadoViewController {
     public String editar(@PathVariable UUID id, Model model) {
         model.addAttribute("titulo", "Editar Certificado");
         model.addAttribute("id", id);
-        model.addAttribute("certificado", service.buscarPorId(id));
+        model.addAttribute("certificadoRequest", paraRequest(service.buscarPorId(id)));
         return "certificados/form";
     }
 
     @PostMapping("/{id}")
-    public String atualizar(@PathVariable UUID id, CertificadoRequest request) {
-        service.atualizar(id, request);
+    public String atualizar(@PathVariable UUID id, @Valid CertificadoRequest certificadoRequest,
+            BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Editar Certificado");
+            model.addAttribute("id", id);
+            return "certificados/form";
+        }
+        service.atualizar(id, certificadoRequest);
         return "redirect:/certificados/" + id;
     }
 
@@ -65,6 +74,12 @@ public class CertificadoViewController {
     public String excluir(@PathVariable UUID id) {
         service.remover(id);
         return "redirect:/certificados";
+    }
+
+    private CertificadoRequest paraRequest(Certificado certificado) {
+        CertificadoRequest request = new CertificadoRequest();
+        request.setCodigoValidacao(certificado.getCodigoValidacao());
+        return request;
     }
 
     private Palestrante exigirPalestranteLogado(HttpSession session) {

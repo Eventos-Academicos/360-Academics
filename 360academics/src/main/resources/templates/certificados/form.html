@@ -8,10 +8,10 @@
     </section>
 
     <section class="section-card">
-        <form method="post" th:action="@{/certificados/{id}(id=${id})}">
+        <form method="post" th:object="${certificadoRequest}" th:action="@{/certificados/{id}(id=${id})}">
             <label for="codigoValidacao">Código de validação</label>
-            <input type="text" id="codigoValidacao" name="codigoValidacao" required
-                   th:value="${certificado != null ? certificado.codigoValidacao : ''}">
+            <input type="text" id="codigoValidacao" th:field="*{codigoValidacao}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('codigoValidacao')}" th:errors="*{codigoValidacao}">Código inválido</span>
 
             <button type="submit">Salvar</button>
         </form>

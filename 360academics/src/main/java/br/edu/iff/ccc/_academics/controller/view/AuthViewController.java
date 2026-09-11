@@ -2,6 +2,7 @@ package br.edu.iff.ccc._academics.controller.view;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import br.edu.iff.ccc._academics.entities.Usuario;
 import br.edu.iff.ccc._academics.service.AuthService;
 import br.edu.iff.ccc._academics.service.ParticipanteService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 public class AuthViewController {
@@ -46,12 +48,21 @@ public class AuthViewController {
     @GetMapping("/registro")
     public String registro(Model model) {
         model.addAttribute("titulo", "Criar Conta");
+        model.addAttribute("participanteRequest", new ParticipanteRequest());
         return "auth/registro";
     }
 
     @PostMapping("/registro")
-    public String criarConta(ParticipanteRequest request, HttpSession session) {
-        Participante participante = participanteService.criar(request);
+    public String criarConta(@Valid ParticipanteRequest participanteRequest, BindingResult result, Model model,
+            HttpSession session) {
+        if (participanteRequest.getSenha() == null || participanteRequest.getSenha().isBlank()) {
+            result.rejectValue("senha", "senha.obrigatoria", "A senha é obrigatória.");
+        }
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Criar Conta");
+            return "auth/registro";
+        }
+        Participante participante = participanteService.criar(participanteRequest);
         entrar(session, participante);
         return "redirect:/inicial";
     }

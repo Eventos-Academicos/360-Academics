@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import br.edu.iff.ccc._academics.dto.AtividadeRequest;
 import br.edu.iff.ccc._academics.entities.Atividade;
 import br.edu.iff.ccc._academics.entities.Palestrante;
-import br.edu.iff.ccc._academics.exception.RegraNegocioException;
+import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.repository.AtividadeRepositorio;
 
 @Service
@@ -31,7 +31,7 @@ public class AtividadeService {
 
     public Atividade buscarPorId(UUID id) {
         return repositorio.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Atividade não encontrada."));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Atividade não encontrada."));
     }
 
     public Atividade criar(UUID eventoId, AtividadeRequest request) {

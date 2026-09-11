@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{baseLayout :: layout(pageTitle=${titulo}, content=~{::content})}">
+<th:block th:fragment="content">
+    <section class="hero">
+        <h1 th:text="${titulo}">Operação não permitida</h1>
+        <p>Uma regra de negócio da plataforma impediu esta operação.</p>
+    </section>
+
+    <section class="section-card">
+        <p class="alert-erro" th:text="${mensagem}">Detalhe do erro.</p>
+    </section>
+
+    <section class="section-card callout">
+        <div>
+            <h2>O que fazer agora</h2>
+            <p>Revise as condições da operação e tente de novo.</p>
+        </div>
+        <a class="btn" th:href="@{/inicial}">Voltar ao início</a>
+    </section>
+</th:block>
+</html>

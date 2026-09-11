@@ -10,7 +10,7 @@ import br.edu.iff.ccc._academics.dto.HistoricoRequest;
 import br.edu.iff.ccc._academics.entities.Evento;
 import br.edu.iff.ccc._academics.entities.HistoricoParticipacao;
 import br.edu.iff.ccc._academics.entities.Participante;
-import br.edu.iff.ccc._academics.exception.RegraNegocioException;
+import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.repository.HistoricoRepositorio;
 
 @Service
@@ -33,7 +33,7 @@ public class HistoricoService {
 
     public HistoricoParticipacao buscarPorId(UUID id) {
         return repositorio.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Registro de histórico não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Registro de histórico não encontrado."));
     }
 
     public HistoricoParticipacao criar(HistoricoRequest request) {

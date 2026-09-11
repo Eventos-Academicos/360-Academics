@@ -10,6 +10,7 @@ import br.edu.iff.ccc._academics.dto.CertificadoRequest;
 import br.edu.iff.ccc._academics.entities.Atividade;
 import br.edu.iff.ccc._academics.entities.Certificado;
 import br.edu.iff.ccc._academics.entities.Inscricao;
+import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.exception.RegraNegocioException;
 import br.edu.iff.ccc._academics.repository.CertificadoRepositorio;
 
@@ -37,7 +38,7 @@ public class CertificadoService {
 
     public Certificado buscarPorId(UUID id) {
         return repositorio.findById(id)
-                .orElseThrow(() -> new RegraNegocioException("Certificado não encontrado."));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Certificado não encontrado."));
     }
 
     public Certificado gerar(UUID inscricaoId, UUID atividadeId, UUID palestranteEmissorId) {

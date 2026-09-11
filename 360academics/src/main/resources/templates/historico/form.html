@@ -8,33 +8,33 @@
     </section>
 
     <section class="section-card">
-        <form method="post"
+        <form method="post" th:object="${historicoRequest}"
               th:action="${id} != null ? @{/historico/{id}(id=${id})} : @{/historico}">
             <label for="participanteId">Participante</label>
-            <select id="participanteId" name="participanteId" required>
+            <select id="participanteId" th:field="*{participanteId}" th:errorclass="is-invalid">
                 <option value="">Selecione um participante</option>
                 <option th:each="participante : ${participantes}"
                         th:value="${participante.id}"
-                        th:text="${participante.nome}"
-                        th:selected="${item != null and item.participante.id == participante.id}">
+                        th:text="${participante.nome}">
                     Nome do participante
                 </option>
             </select>
+            <span class="erro-campo" th:if="${#fields.hasErrors('participanteId')}" th:errors="*{participanteId}">Participante inválido</span>
 
             <label for="eventoId">Evento</label>
-            <select id="eventoId" name="eventoId" required>
+            <select id="eventoId" th:field="*{eventoId}" th:errorclass="is-invalid">
                 <option value="">Selecione um evento</option>
                 <option th:each="evento : ${eventos}"
                         th:value="${evento.id}"
-                        th:text="${evento.nome}"
-                        th:selected="${item != null and item.evento.id == evento.id}">
+                        th:text="${evento.nome}">
                     Nome do evento
                 </option>
             </select>
+            <span class="erro-campo" th:if="${#fields.hasErrors('eventoId')}" th:errors="*{eventoId}">Evento inválido</span>
 
             <label for="dataConclusao">Data de conclusão</label>
-            <input type="date" id="dataConclusao" name="dataConclusao" required
-                   th:value="${item != null ? item.dataConclusao : ''}">
+            <input type="date" id="dataConclusao" th:field="*{dataConclusao}" th:errorclass="is-invalid">
+            <span class="erro-campo" th:if="${#fields.hasErrors('dataConclusao')}" th:errors="*{dataConclusao}">Data inválida</span>
 
             <button type="submit">Salvar</button>
         </form>
