@@ -2,6 +2,8 @@ package br.edu.iff.ccc._academics.entities;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
@@ -28,6 +30,7 @@ public abstract class Usuario {
     @Column(name = "ds_email", nullable = false, unique = true, length = 100)
     private String email;
 
+    @JsonIgnore
     @Column(name = "ds_senha", length = 100)
     private String senha;
 
