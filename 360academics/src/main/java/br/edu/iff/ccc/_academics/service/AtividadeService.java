@@ -48,6 +48,7 @@ public class AtividadeService {
     }
 
     public void remover(UUID id) {
+        buscarPorId(id); // lança RecursoNaoEncontradoException se não existir
         repositorio.deleteById(id);
     }
 

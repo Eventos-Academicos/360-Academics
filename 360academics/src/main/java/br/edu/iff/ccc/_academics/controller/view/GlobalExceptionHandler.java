@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpSession;
  * Interceptação global de erros da aplicação. Cada exceção do domínio é
  * traduzida para uma página de erro amigável, renderizada com Thymeleaf.
  */
-@ControllerAdvice
+@ControllerAdvice(basePackages = "br.edu.iff.ccc._academics.controller.view")
 public class GlobalExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);

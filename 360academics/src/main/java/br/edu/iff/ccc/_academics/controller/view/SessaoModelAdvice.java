@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import jakarta.servlet.http.HttpSession;
 
-@ControllerAdvice
+@ControllerAdvice(basePackages = "br.edu.iff.ccc._academics.controller.view")
 public class SessaoModelAdvice {
 
     @ModelAttribute
