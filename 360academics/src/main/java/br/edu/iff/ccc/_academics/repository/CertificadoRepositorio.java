@@ -9,4 +9,7 @@ import br.edu.iff.ccc._academics.entities.Certificado;
 
 @Repository
 public interface CertificadoRepositorio extends JpaRepository<Certificado, UUID> {
+
+    boolean existsByInscricaoIdAndAtividadeId(UUID inscricaoId, UUID atividadeId);
+
 }

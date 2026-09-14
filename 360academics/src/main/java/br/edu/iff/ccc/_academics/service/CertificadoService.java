@@ -7,9 +7,11 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 import br.edu.iff.ccc._academics.dto.CertificadoRequest;
+import br.edu.iff.ccc._academics.dto.ConfirmacaoCertificadoRequest;
 import br.edu.iff.ccc._academics.entities.Atividade;
 import br.edu.iff.ccc._academics.entities.Certificado;
 import br.edu.iff.ccc._academics.entities.Inscricao;
+import br.edu.iff.ccc._academics.exception.EntidadeDuplicadaException;
 import br.edu.iff.ccc._academics.exception.RecursoNaoEncontradoException;
 import br.edu.iff.ccc._academics.exception.RegraNegocioException;
 import br.edu.iff.ccc._academics.repository.CertificadoRepositorio;
@@ -22,14 +24,17 @@ public class CertificadoService {
     private final AtividadeService atividadeService;
     private final PresencaService presencaService;
     private final HistoricoService historicoService;
+    private final OrganizadorService organizadorService;
 
     public CertificadoService(CertificadoRepositorio repositorio, InscricaoService inscricaoService,
-            AtividadeService atividadeService, PresencaService presencaService, HistoricoService historicoService) {
+            AtividadeService atividadeService, PresencaService presencaService, HistoricoService historicoService,
+            OrganizadorService organizadorService) {
         this.repositorio = repositorio;
         this.inscricaoService = inscricaoService;
         this.atividadeService = atividadeService;
         this.presencaService = presencaService;
         this.historicoService = historicoService;
+        this.organizadorService = organizadorService;
     }
 
     public List<Certificado> listarTodos() {
@@ -52,6 +57,32 @@ public class CertificadoService {
         }
         if (!presencaService.estaConfirmada(inscricaoId, atividadeId)) {
             throw new RegraNegocioException("Certificado só pode ser emitido para presença confirmada.");
+        }
+
+        Certificado certificado = new Certificado();
+        certificado.setInscricao(inscricao);
+        certificado.setAtividade(atividade);
+        certificado.setDataEmissao(LocalDate.now());
+        certificado.setCodigoValidacao(UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        repositorio.save(certificado);
+
+        historicoService.registrarConclusao(inscricao.getParticipante(), atividade.getEvento());
+
+        return certificado;
+    }
+
+    public Certificado confirmarEmissao(ConfirmacaoCertificadoRequest request) {
+        organizadorService.buscarPorId(request.organizadorId());
+        Inscricao inscricao = inscricaoService.buscarPorId(request.inscricaoId());
+        Atividade atividade = atividadeService.buscarPorId(request.atividadeId());
+
+        if (!presencaService.estaConfirmada(inscricao.getId(), atividade.getId())) {
+            throw new RegraNegocioException(
+                    "Certificado só pode ser confirmado para presença confirmada na atividade.");
+        }
+        if (repositorio.existsByInscricaoIdAndAtividadeId(inscricao.getId(), atividade.getId())) {
+            throw new EntidadeDuplicadaException(
+                    "A emissão deste certificado já foi confirmada para o participante nesta atividade.");
         }
 
         Certificado certificado = new Certificado();
